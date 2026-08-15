@@ -60,7 +60,7 @@
 
             <div class="space-y-2">
                 <h1 class="text-2xl sm:text-3xl font-bold text-rose-600 tracking-tight">Hey Lakshita... ✨</h1>
-                <p class="text-sm sm:text-base text-gray-600 font-medium px-2">A tiny kitten whispered that there is a special delivery waiting inside for you.</p>
+                <p class="text-sm sm:text-base text-gray-600 font-medium px-2">A tiny kitten whispered that there is a special delivery and an apology waiting inside for you.</p>
             </div>
 
             <button onclick="nextScreen()" class="w-full sm:w-auto bg-rose-500 hover:bg-rose-600 text-white font-bold py-3.5 px-8 rounded-full shadow-lg hover:shadow-rose-300/50 transition-all duration-300 transform active:scale-95 cursor-pointer flex items-center justify-center gap-2 text-base sm:text-lg group">
@@ -89,44 +89,48 @@
 
             <!-- Header -->
             <div class="flex items-center justify-center gap-2">
-                <span id="cat-emoji" class="text-3xl transition-transform duration-300 select-none">😻</span>
+                <span id="cat-emoji" class="text-3xl transition-transform duration-300 select-none">🥺</span>
                 <h2 class="cursive text-3xl sm:text-4xl text-rose-600 font-bold tracking-wide">My Dearest Lakshita,</h2>
                 <span class="text-2xl">✨</span>
             </div>
             
-            <!-- Love Letter -->
-            <div class="text-left text-gray-700 space-y-3.5 text-sm md:text-base bg-rose-50/40 p-4 sm:p-5 rounded-2xl border border-rose-100/50 max-h-[25vh] overflow-y-auto custom-scrollbar leading-relaxed">
+            <!-- Love & Apology Letter -->
+            <div class="text-left text-gray-700 space-y-3.5 text-sm md:text-base bg-rose-50/40 p-4 sm:p-5 rounded-2xl border border-rose-100/50 max-h-[28vh] overflow-y-auto custom-scrollbar leading-relaxed">
                 <p class="flex items-start gap-3">
                     <span class="text-rose-400 shrink-0 text-base">🐾</span>
-                    <span>You bring so much magic and warmth into my world. My heart does little flips every single time you smile, exactly like a kitten chasing a laser pointer.</span>
+                    <span>First, I want to say **I am so deeply sorry for yesterday**. I hate that I didn't message you properly and made you feel neglected even for a second. You mean the entire world to me, and leaving you feeling ignored breaks my heart.</span>
                 </p>
                 <p class="flex items-start gap-3">
                     <span class="text-rose-400 shrink-0 text-base">🐾</span>
-                    <span>Life with you feels so incredibly cozy, safe, and complete. I cherish every deep conversation we have, every random inside joke, and every single second spent by your side.</span>
+                    <span>Please know it was never intentional—you are constantly on my mind, even when I'm distracted or busy. Life feels incomplete and restless whenever I'm not connected with you.</span>
                 </p>
                 <p class="flex items-start gap-3">
                     <span class="text-rose-400 shrink-0 text-base">🐾</span>
-                    <span>I want to stand by you through everything—celebrating your brightest wins, holding you tight on cloudy days, and making sure you always feel like the luckiest girl in the universe.</span>
+                    <span>You bring so much magic, warmth, and grace into my life. Every smile of yours lights up my darkest days, and I promise to cherish, respect, and prioritize you so much better every single day.</span>
+                </p>
+                <p class="flex items-start gap-3">
+                    <span class="text-rose-400 shrink-0 text-base">🐾</span>
+                    <span>Will you forgive your silly human and let me make it up to you today? ❤️</span>
                 </p>
             </div>
 
-            <!-- OUR SONGS (SPOTIFY EMBED) -->
+            <!-- ROMANTIC HINDI SONGS PLAYER -->
             <div class="w-full">
                 <p class="text-xs font-bold text-rose-600 mb-2 flex items-center justify-center gap-1">
-                    <span>Our Playlist</span> 🎵
+                    <span>Our Romantic Hindi Songs (Ishqa Ve, Inaam & More)</span> 🎵
                 </p>
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUfTFmBDM0?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
 
             <!-- Proposal Question -->
             <p class="text-base sm:text-lg font-bold text-gray-800 px-1 mt-1">
-                Will you make me the absolute happiest person and be mine? 💍
+                Will you forgive me, make me the happiest person, and be mine? 💍
             </p>
 
             <!-- Dynamic Buttons -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 relative min-h-[110px] sm:min-h-[55px] w-full" id="btn-container">
                 <button onclick="celebrate()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-6 rounded-full shadow-md shadow-emerald-100 transition-all text-base sm:text-lg cursor-pointer transform active:scale-95 order-1 flex items-center justify-center gap-2">
-                    <span>Yes, always!</span> ❤️
+                    <span>Yes, I forgive you!</span> ❤️
                 </button>
                 <button id="no-btn" onmouseover="moveNoButton()" onclick="moveNoButton()" ontouchstart="moveNoButton(event)" class="w-full bg-gray-400 text-white font-semibold py-3.5 px-6 rounded-full transition-all text-base sm:text-lg order-2 static sm:relative z-20 touch-none select-none">
                     No 😿
@@ -138,12 +142,12 @@
         <div id="screen-3" class="hidden flex flex-col items-center justify-center space-y-5 py-4 animate-scale-up">
             <div class="text-5xl sm:text-6xl md:text-7xl animate-bounce tracking-widest select-none">💖🎉🐈</div>
 
-            <h2 class="cursive text-4xl sm:text-5xl text-rose-600 font-bold">She said YES!</h2>
-            <p class="text-sm sm:text-base md:text-lg text-gray-700 font-medium px-2">My heart is completely overflowing, Lakshita. I love you to the moon and back! 🌙🐾</p>
+            <h2 class="cursive text-4xl sm:text-5xl text-rose-600 font-bold">She forgave me!</h2>
+            <p class="text-sm sm:text-base md:text-lg text-gray-700 font-medium px-2">My heart is completely overflowing, Lakshita. I love you to the moon and back, and I promise to take the best care of you! 🌙🐾</p>
             
             <div class="w-full p-4 bg-emerald-50/80 border border-emerald-100 rounded-2xl flex items-center justify-center gap-3">
                 <span class="text-3xl shrink-0">😸</span>
-                <p class="text-left text-xs sm:text-sm text-emerald-800 font-bold leading-tight">Mission Successful! Time to celebrate together! 🥂</p>
+                <p class="text-left text-xs sm:text-sm text-emerald-800 font-bold leading-tight">Forgiveness granted! Time to make wonderful new memories together! 🥂</p>
             </div>
         </div>
     </div>
@@ -230,5 +234,4 @@
         }
     </script>
 </body>
-  </html>
-  
+</html>
