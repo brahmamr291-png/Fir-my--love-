@@ -1,4 +1,4 @@
-                <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -114,21 +114,21 @@
                 </p>
             </div>
 
-            <!-- CUSTOM ROMANTIC AUDIO PLAYER CARD -->
+            <!-- HINDI ROMANTIC AUDIO PLAYER -->
             <div class="w-full bg-rose-50/90 p-4 rounded-2xl border border-rose-200 text-center space-y-3 shadow-sm">
                 <div class="flex items-center justify-between px-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-2xl">🎧</span>
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl animate-pulse">🎶</span>
                         <div class="text-left">
-                            <p class="text-xs font-bold text-rose-600">Our Romantic Melody</p>
-                            <p class="text-xs text-gray-500 font-medium">Romantic Hindi Track 💖</p>
+                            <p class="text-xs font-bold text-rose-600">Special Hindi Romantic Song</p>
+                            <p class="text-xs text-gray-500 font-medium">Playing for Lakshita 💖</p>
                         </div>
                     </div>
                     <button id="play-btn" onclick="toggleAudio()" class="bg-rose-500 hover:bg-rose-600 text-white rounded-full p-3 w-10 h-10 flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer">
                         <i id="play-icon" class="fa-solid fa-play text-sm"></i>
                     </button>
                 </div>
-                <!-- HTML5 Native Audio element -->
+                <!-- Attached Hindi Romantic Track Stream -->
                 <audio id="romantic-audio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-love-112185.mp3"></audio>
             </div>
 
@@ -174,7 +174,7 @@
             const screen2 = document.getElementById('screen-2');
             screen2.classList.remove('hidden');
 
-            // Play music automatically when opening the letter
+            // Autoplay music upon clicking 'Open my heart'
             toggleAudio(true);
         }
 
@@ -185,8 +185,8 @@
             if (audio.paused || forcePlay) {
                 audio.play().then(() => {
                     icon.className = 'fa-solid fa-pause text-sm';
-                }).catch(() => {
-                    // Browser prevented autoplay before interaction
+                }).catch((err) => {
+                    console.log("Audio autoplay waiting for user interaction:", err);
                 });
             } else {
                 audio.pause();
@@ -263,5 +263,5 @@
         }
     </script>
 </body>
-    </html>
-    
+  </html>
+  
