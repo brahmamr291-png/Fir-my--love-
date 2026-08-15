@@ -114,13 +114,13 @@
                 </p>
             </div>
 
-            <!-- YOUTUBE PLAYER WITH ISHQ VE -->
+            <!-- HINDI ROMANTIC SONG PLAYER (TUM SE HI) -->
             <div class="w-full space-y-2">
                 <p class="text-xs font-bold text-rose-600 flex items-center justify-center gap-1">
-                    <span>Our Special Song: Ishq Ve 🎶</span> 💖
+                    <span>Our Special Hindi Track: Tum Se Hi 🎶</span> 💖
                 </p>
                 <div class="w-full rounded-2xl overflow-hidden shadow-sm aspect-video border border-rose-200">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/Z0aZ5vJ6Y_M?rel=0" title="Ishq Ve" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/cbq0pUT3wE4?rel=0" title="Tum Se Hi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -216,7 +216,7 @@
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.top = '-5vh';
                 confetti.style.fontSize = Math.random() * (window.innerWidth < 640 ? 15 : 22) + 12 + 'px';
-                confetti.style.color = colors[Math.color];
+                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
                 
                 const duration = Math.random() * 2.5 + 2; 
