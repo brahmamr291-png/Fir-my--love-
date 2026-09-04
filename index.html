@@ -1,17 +1,407 @@
-            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A Little Something For Kushi ❤️</title>
-  <link rel="stylesheet" href="style.css" />
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* RESET & BASE STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* LOCK SCREEN */
+    .screen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #111;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .lock-card {
+      background: #1c1c1e;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      width: 320px;
+    }
+
+    .heart-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid #777;
+      transition: background 0.2s;
+    }
+
+    .dot.filled {
+      background: #ff3b30;
+      border-color: #ff3b30;
+    }
+
+    #lock-message {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .key {
+      background: #2c2c2e;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 20px;
+      cursor: pointer;
+      margin: 0 auto;
+      transition: transform 0.1s, background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .key:active {
+      transform: scale(0.9);
+      background: #3a3a3c;
+    }
+
+    .key.action {
+      font-size: 16px;
+      color: #ff3b30;
+    }
+
+    /* FLOWER INTRO */
+    .flower-intro-section {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #fdf6f6;
+      position: relative;
+    }
+
+    .flower-ring {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      animation: spinRing 20s linear infinite;
+    }
+
+    @keyframes spinRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .flower {
+      position: absolute;
+      font-size: 40px;
+    }
+
+    .f1 { top: 0; left: 50%; transform: translate(-50%, -50%); }
+    .f2 { top: 15%; right: 15%; }
+    .f3 { top: 50%; right: 0; transform: translate(50%, -50%); }
+    .f4 { bottom: 15%; right: 15%; }
+    .f5 { bottom: 0; left: 50%; transform: translate(-50%, 50%); }
+    .f6 { bottom: 15%; left: 15%; }
+    .f7 { top: 50%; left: 0; transform: translate(-50%, -50%); }
+    .f8 { top: 15%; left: 15%; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 30px;
+      color: #888;
+      font-size: 14px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    /* GALLERY */
+    .gallery-section {
+      padding: 80px 20px;
+      background: #8b1e2b;
+      text-align: center;
+    }
+
+    .script-heading {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.8rem;
+      color: #fff;
+      margin-bottom: 50px;
+    }
+
+    .polaroid-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .polaroid {
+      background: #fff;
+      padding: 15px 15px 25px 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      width: 220px;
+    }
+
+    .polaroid img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .polaroid p {
+      color: #333;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3rem;
+      margin-top: 15px;
+    }
+
+    .rot-left { transform: rotate(-5deg); }
+    .rot-right { transform: rotate(4deg); }
+    .rot-left-more { transform: rotate(-8deg); }
+    .rot-right-more { transform: rotate(6deg); }
+
+    .polaroid:hover {
+      transform: scale(1.1) rotate(0deg);
+      z-index: 10;
+    }
+
+    /* LETTER */
+    .letter-section {
+      padding: 80px 20px;
+      background: #5b0e17;
+      display: flex;
+      justify-content: center;
+    }
+
+    .letter-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 600px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .letter-card h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      color: #ffb3c1;
+      margin-bottom: 20px;
+    }
+
+    .letter-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #f1f1f1;
+      margin-bottom: 20px;
+    }
+
+    .signature {
+      margin-top: 30px;
+      text-align: right;
+    }
+
+    .handwriting {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: #ffb3c1;
+    }
+
+    /* MUSIC */
+    .music-section {
+      padding: 80px 20px;
+      background: #3a080d;
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #fff;
+    }
+
+    .section-subtitle {
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      color: #aaa;
+      margin-bottom: 40px;
+    }
+
+    .music-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .music-card {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      width: 300px;
+      text-align: left;
+    }
+
+    .album-art img {
+      width: 70px;
+      height: 70px;
+      border-radius: 8px;
+    }
+
+    .song-info h3 { font-size: 1.1rem; color: #fff; }
+    .song-info p { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
+
+    .play-btn {
+      background: #1db954;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    /* PROPOSAL SECTION */
+    .proposal-section {
+      padding: 80px 20px;
+      background: #2b0008;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .proposal-card {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 50px 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .proposal-heading {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+      color: #ffb3c1;
+    }
+
+    .proposal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    #yes-btn {
+      background: #ff3b30;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    #no-btn {
+      background: #555;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .hidden-msg {
+      display: none;
+      font-size: 1.3rem;
+      color: #ffb3c1;
+      margin-top: 25px;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* HEART BANNER */
+    .heart-banner {
+      height: 50vh;
+      background: #cc0033;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .ending-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.8rem;
+      color: white;
+      padding: 0 20px;
+    }
+  </style>
 </head>
 <body>
 
   <!-- 1. PASSCODE / LOCK SCREEN -->
-  <section id="lock-screen" class="screen active">
+  <section id="lock-screen" class="screen">
     <div class="lock-card">
       <div class="heart-icon">❤️</div>
       <div class="pin-display">
@@ -155,480 +545,69 @@
 
     <!-- 7. HEART ANIMATED BANNER -->
     <section class="heart-banner">
-      <div class="floating-hearts-bg"></div>
       <h2 class="ending-text">I love you, Kushi... to the moon and back.</h2>
     </section>
 
   </main>
 
-  <script src="script.js"></script>
+  <script>
+    let currentPin = '';
+
+    function pressKey(val) {
+      if (currentPin.length < 6) {
+        currentPin += val;
+        updateDots();
+      }
+
+      if (currentPin.length === 6) {
+        setTimeout(checkPin, 200);
+      }
+    }
+
+    function clearPin() {
+      currentPin = '';
+      updateDots();
+    }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index < currentPin.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled');
+        }
+      });
+    }
+
+    function checkPin() {
+      document.getElementById('lock-screen').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+    }
+
+    function togglePlay(btn) {
+      if (btn.innerText.includes('Save')) {
+        btn.innerText = '✓ Saved to Spotify';
+        btn.style.background = '#333';
+      } else {
+        btn.innerText = '▶ Save on Spotify';
+        btn.style.background = '#1db954';
+      }
+    }
+
+    function moveButton() {
+      const noBtn = document.getElementById('no-btn');
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 100 - 50;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function acceptProposal() {
+      const msg = document.getElementById('response-msg');
+      msg.innerText = "Yay! You've made me the happiest person in the world! ❤️💍";
+      msg.style.display = 'block';
+      document.querySelector('.proposal-buttons').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #121212;
-  color: #ffffff;
-  overflow-x: hidden;
-}
-
-.screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #111;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.lock-card {
-  background: #1c1c1e;
-  padding: 30px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  width: 320px;
-}
-
-.heart-icon {
-  font-size: 30px;
-  margin-bottom: 10px;
-}
-
-.pin-display {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 1px solid #777;
-  transition: background 0.2s;
-}
-
-.dot.filled {
-  background: #ff3b30;
-  border-color: #ff3b30;
-}
-
-#lock-message {
-  font-size: 14px;
-  color: #aaa;
-  margin-bottom: 20px;
-}
-
-.keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.key {
-  background: #2c2c2e;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 20px;
-  cursor: pointer;
-  margin: 0 auto;
-  transition: transform 0.1s, background 0.2s;
-}
-
-.key:active {
-  transform: scale(0.9);
-  background: #3a3a3c;
-}
-
-.key.action {
-  font-size: 16px;
-  color: #ff3b30;
-}
-
-/* FLOWER INTRO */
-.flower-intro-section {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #fdf6f6;
-  position: relative;
-}
-
-.flower-ring {
-  position: relative;
-  width: 280px;
-  height: 280px;
-  animation: spinRing 20s linear infinite;
-}
-
-@keyframes spinRing {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.flower {
-  position: absolute;
-  font-size: 45px;
-}
-
-.f1 { top: 0; left: 50%; transform: translate(-50%, -50%); }
-.f2 { top: 15%; right: 15%; }
-.f3 { top: 50%; right: 0; transform: translate(50%, -50%); }
-.f4 { bottom: 15%; right: 15%; }
-.f5 { bottom: 0; left: 50%; transform: translate(-50%, 50%); }
-.f6 { bottom: 15%; left: 15%; }
-.f7 { top: 50%; left: 0; transform: translate(-50%, -50%); }
-.f8 { top: 15%; left: 15%; }
-
-.scroll-hint {
-  position: absolute;
-  bottom: 30px;
-  color: #888;
-  font-size: 14px;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
-}
-
-/* GALLERY */
-.gallery-section {
-  padding: 80px 20px;
-  background: #8b1e2b;
-  text-align: center;
-}
-
-.script-heading {
-  font-family: 'Dancing Script', cursive;
-  font-size: 3rem;
-  color: #fff;
-  margin-bottom: 50px;
-}
-
-.polaroid-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.polaroid {
-  background: #fff;
-  padding: 15px 15px 25px 15px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  width: 220px;
-}
-
-.polaroid img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.polaroid p {
-  color: #333;
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.3rem;
-  margin-top: 15px;
-}
-
-.rot-left { transform: rotate(-5deg); }
-.rot-right { transform: rotate(4deg); }
-.rot-left-more { transform: rotate(-8deg); }
-.rot-right-more { transform: rotate(6deg); }
-
-.polaroid:hover {
-  transform: scale(1.1) rotate(0deg);
-  z-index: 10;
-}
-
-/* LETTER */
-.letter-section {
-  padding: 100px 20px;
-  background: #5b0e17;
-  display: flex;
-  justify-content: center;
-}
-
-.letter-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 40px;
-  border-radius: 15px;
-  max-width: 600px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-}
-
-.letter-card h2 {
-  font-family: 'Great Vibes', cursive;
-  font-size: 2.5rem;
-  color: #ffb3c1;
-  margin-bottom: 20px;
-}
-
-.letter-text {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: #f1f1f1;
-  margin-bottom: 20px;
-}
-
-.signature {
-  margin-top: 30px;
-  text-align: right;
-}
-
-.handwriting {
-  font-family: 'Great Vibes', cursive;
-  font-size: 2rem;
-  color: #ffb3c1;
-}
-
-/* MUSIC */
-.music-section {
-  padding: 80px 20px;
-  background: #3a080d;
-  text-align: center;
-}
-
-.section-title {
-  font-family: 'Great Vibes', cursive;
-  font-size: 3.5rem;
-  color: #fff;
-}
-
-.section-subtitle {
-  font-size: 0.8rem;
-  letter-spacing: 3px;
-  color: #aaa;
-  margin-bottom: 40px;
-}
-
-.music-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.music-card {
-  background: #1e1e1e;
-  border-radius: 12px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  width: 300px;
-  text-align: left;
-}
-
-.album-art img {
-  width: 70px;
-  height: 70px;
-  border-radius: 8px;
-}
-
-.song-info h3 { font-size: 1.1rem; color: #fff; }
-.song-info p { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
-
-.play-btn {
-  background: #1db954;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  cursor: pointer;
-}
-
-/* PROPOSAL SECTION */
-.proposal-section {
-  padding: 100px 20px;
-  background: #2b0008;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.proposal-card {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 50px 30px;
-  border-radius: 20px;
-  max-width: 500px;
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.proposal-heading {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  color: #ffb3c1;
-}
-
-.proposal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  position: relative;
-  min-height: 50px;
-}
-
-#yes-btn {
-  background: #ff3b30;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  font-size: 1.1rem;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-#yes-btn:hover {
-  transform: scale(1.1);
-}
-
-#no-btn {
-  background: #555;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  font-size: 1.1rem;
-  border-radius: 30px;
-  cursor: pointer;
-  position: relative;
-}
-
-.hidden-msg {
-  display: none;
-  font-size: 1.3rem;
-  color: #ffb3c1;
-  margin-top: 25px;
-  font-family: 'Dancing Script', cursive;
-}
-
-/* HEART BANNER */
-.heart-banner {
-  position: relative;
-  height: 60vh;
-  background: #cc0033;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.ending-text {
-  font-family: 'Dancing Script', cursive;
-  font-size: 3.5rem;
-  color: white;
-  z-index: 2;
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  padding: 0 20px;
-}
-let currentPin = '';
-
-function pressKey(val) {
-  if (currentPin.length < 6) {
-    currentPin += val;
-    updateDots();
-  }
-
-  if (currentPin.length === 6) {
-    setTimeout(checkPin, 200);
-  }
-}
-
-function clearPin() {
-  currentPin = '';
-  updateDots();
-}
-
-function updateDots() {
-  const dots = document.querySelectorAll('.dot');
-  dots.forEach((dot, index) => {
-    if (index < currentPin.length) {
-      dot.classList.add('filled');
-    } else {
-      dot.classList.remove('filled');
-    }
-  });
-}
-
-function checkPin() {
-  // Unlocks with any 6-digit PIN entered
-  document.getElementById('lock-screen').classList.add('hidden');
-  document.getElementById('main-content').classList.remove('hidden');
-}
-
-function togglePlay(btn) {
-  if (btn.innerText.includes('Save')) {
-    btn.innerText = '✓ Saved to Spotify';
-    btn.style.background = '#333';
-  } else {
-    btn.innerText = '▶ Save on Spotify';
-    btn.style.background = '#1db954';
-  }
-}
-
-// Playful "No" button movement for the proposal
-function moveButton() {
-  const noBtn = document.getElementById('no-btn');
-  const x = Math.random() * (window.innerWidth - 150) - (window.innerWidth / 2 - 75);
-  const y = Math.random() * 200 - 100;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
-}
-
-function acceptProposal() {
-  const msg = document.getElementById('response-msg');
-  msg.innerText = "Yay! You've made me the happiest person in the world! ❤️💍";
-  msg.style.display = 'block';
-  document.querySelector('.proposal-buttons').style.display = 'none';
-}
-
-// Floating Hearts Background Animation
-function createFloatingHearts() {
-  const banner = document.querySelector('.floating-hearts-bg');
-  if (!banner) return;
-
-  for (let i = 0; i < 25; i++) {
-    const heart = document.createElement('div');
-    heart.innerHTML = '❤️';
-    heart.style.position = 'absolute';
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.top = Math.random() * 100 + '%';
-    heart.style.fontSize = Math.random() * 20 + 15 + 'px';
-    heart.style.opacity = Math.random() * 0.5 + 0.3;
-    banner.appendChild(heart);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', createFloatingHearts);
-      
