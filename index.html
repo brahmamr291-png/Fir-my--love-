@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Universe for Kushi</title>
     
+    <!-- Tailwind CSS for Responsive Layout & Glassmorphism -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
     
+    <!-- External Libraries with High-Availability CDNs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -30,56 +33,31 @@
             color: #f8fafc;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            margin: 0;
         }
 
-        .font-serif-title {
-            font-family: 'Cinzel', serif;
-        }
+        .font-serif-title { font-family: 'Cinzel', serif; }
+        .font-script { font-family: 'Pinyon Script', cursive; }
 
-        .font-script {
-            font-family: 'Pinyon Script', cursive;
-        }
-
-        /* Glassmorphism Styling */
+        /* Glassmorphism Design */
         .glass-card {
-            background: rgba(18, 20, 32, 0.55);
+            background: rgba(18, 20, 32, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(226, 192, 141, 0.15);
+            border: 1px solid rgba(226, 192, 141, 0.2);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: border-color 0.4s ease, transform 0.4s ease;
         }
 
-        .glass-card-interactive {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .glass-card:hover {
+            border-color: rgba(226, 192, 141, 0.45);
         }
 
-        .glass-card-interactive:hover {
-            border-color: rgba(226, 192, 141, 0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px 0 rgba(226, 192, 141, 0.15);
-        }
-
-        /* Ambient Glows */
         .gold-glow {
             text-shadow: 0 0 20px rgba(226, 192, 141, 0.4);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0b10;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(226, 192, 141, 0.3);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(226, 192, 141, 0.6);
-        }
-
-        /* Firefly Animation */
+        /* Firefly Ambient Animations */
         .firefly {
             position: absolute;
             width: 4px;
@@ -94,17 +72,24 @@
 
         @keyframes float-around {
             0% { opacity: 0; transform: translate(0, 0) scale(0.8); }
-            50% { opacity: 0.8; transform: translate(60px, -40px) scale(1.2); }
-            100% { opacity: 0; transform: translate(-40px, -80px) scale(0.8); }
+            50% { opacity: 0.8; transform: translate(40px, -30px) scale(1.2); }
+            100% { opacity: 0; transform: translate(-30px, -60px) scale(0.8); }
         }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0b10; }
+        ::-webkit-scrollbar-thumb { background: rgba(226, 192, 141, 0.3); border-radius: 3px; }
     </style>
 </head>
 <body class="relative selection:bg-[#e2c08d] selection:text-[#0a0b10]">
 
+    <!-- Background 3D WebGL Canvas -->
     <canvas id="webgl-canvas" class="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"></canvas>
 
+    <!-- Audio Player Controls -->
     <div class="fixed top-6 right-6 z-50">
-        <button id="music-toggle" aria-label="Toggle background music" class="glass-card p-3 rounded-full text-[#e2c08d] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#e2c08d]">
+        <button id="music-toggle" aria-label="Toggle background music" class="glass-card p-3 rounded-full text-[#e2c08d] hover:text-white transition-all duration-300 focus:outline-none">
             <i data-lucide="music-4" id="music-icon" class="w-5 h-5"></i>
         </button>
         <audio id="bg-music" loop preload="auto">
@@ -112,18 +97,21 @@
         </audio>
     </div>
 
-    <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0b10] transition-opacity duration-1000 px-4 text-center">
-        <p id="loader-subtitle" class="font-script text-2xl sm:text-3xl text-[#b8b5d3] mb-4 opacity-0">A little universe was created for someone special...</p>
-        <h1 id="loader-title" class="font-serif-title text-4xl sm:text-6xl text-[#e2c08d] tracking-widest uppercase mb-8 gold-glow opacity-0">Kushi</h1>
-        <button id="begin-btn" class="opacity-0 px-8 py-3 rounded-full border border-[#e2c08d]/40 text-[#e2c08d] hover:bg-[#e2c08d] hover:text-[#0a0b10] transition-all duration-500 font-medium tracking-wider text-sm uppercase glass-card">
+    <!-- PRELOADER / INTRO SCREEN -->
+    <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0b10] px-4 text-center transition-opacity duration-1000">
+        <p id="loader-subtitle" class="font-script text-2xl sm:text-3xl text-[#b8b5d3] mb-4">A little universe was created for someone special...</p>
+        <h1 id="loader-title" class="font-serif-title text-4xl sm:text-6xl text-[#e2c08d] tracking-widest uppercase mb-8 gold-glow">Kushi</h1>
+        <button id="begin-btn" class="px-8 py-3 rounded-full border border-[#e2c08d]/40 text-[#e2c08d] hover:bg-[#e2c08d] hover:text-[#0a0b10] transition-all duration-500 font-medium tracking-wider text-sm uppercase glass-card">
             Begin the Journey
         </button>
     </div>
 
+    <!-- MAIN NARRATIVE STORY -->
     <main id="main-content" class="relative z-10 hidden">
 
+        <!-- HERO SECTION -->
         <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
-            <div class="max-w-3xl space-y-6">
+            <div class="max-w-3xl space-y-6 hero-content">
                 <span class="text-[#b8b5d3] tracking-[0.3em] uppercase text-xs sm:text-sm">Written in the Stars</span>
                 <h1 class="font-serif-title text-5xl sm:text-7xl lg:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-[#e2c08d] via-[#f3d2c1] to-[#b8b5d3] font-bold">
                     For Kushi
@@ -138,6 +126,7 @@
             </div>
         </section>
 
+        <!-- CHAPTER 1: TIMELINE -->
         <section class="py-24 px-6 max-w-5xl mx-auto">
             <div class="text-center mb-16 space-y-2">
                 <span class="text-[#e2c08d] font-script text-3xl">Chapter I</span>
@@ -147,29 +136,29 @@
             <div class="relative border-l border-[#e2c08d]/20 ml-4 sm:ml-32 space-y-12">
                 <div class="relative pl-8 sm:pl-12 timeline-item">
                     <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#0a0b10] border-2 border-[#e2c08d]"></div>
-                    <div class="glass-card p-6 rounded-2xl glass-card-interactive max-w-xl">
+                    <div class="glass-card p-6 rounded-2xl max-w-xl">
                         <span class="text-xs text-[#e2c08d] tracking-widest uppercase font-semibold">The First Spark</span>
                         <h3 class="font-serif-title text-xl text-white mt-1 mb-2">When Paths Crossed</h3>
                         <p class="text-slate-300 text-sm leading-relaxed">
-                            The moment you stepped into my life, the world didn't stop—it suddenly made complete sense. Your laughter shifted the atmospheric temperature of every room.
+                            The moment you stepped into my life, the world didn't stop—it suddenly made complete sense. Your presence shifted everything.
                         </p>
                     </div>
                 </div>
 
                 <div class="relative pl-8 sm:pl-12 timeline-item">
                     <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#0a0b10] border-2 border-[#f3d2c1]"></div>
-                    <div class="glass-card p-6 rounded-2xl glass-card-interactive max-w-xl">
+                    <div class="glass-card p-6 rounded-2xl max-w-xl">
                         <span class="text-xs text-[#f3d2c1] tracking-widest uppercase font-semibold">Unspoken Connection</span>
                         <h3 class="font-serif-title text-xl text-white mt-1 mb-2">Late Night Conversations</h3>
                         <p class="text-slate-300 text-sm leading-relaxed">
-                            Hours turned into seconds talking about everything and nothing at all. I realized back then that you were becoming my favorite thought.
+                            Hours turned into seconds talking about everything and nothing at all. I realized then that you were becoming my favorite thought.
                         </p>
                     </div>
                 </div>
 
                 <div class="relative pl-8 sm:pl-12 timeline-item">
                     <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#0a0b10] border-2 border-[#b8b5d3]"></div>
-                    <div class="glass-card p-6 rounded-2xl glass-card-interactive max-w-xl">
+                    <div class="glass-card p-6 rounded-2xl max-w-xl">
                         <span class="text-xs text-[#b8b5d3] tracking-widest uppercase font-semibold">Today & Beyond</span>
                         <h3 class="font-serif-title text-xl text-white mt-1 mb-2">Building Our Sanctuary</h3>
                         <p class="text-slate-300 text-sm leading-relaxed">
@@ -180,38 +169,39 @@
             </div>
         </section>
 
-        <section class="py-24 px-6 max-w-6xl mx-auto relative">
+        <!-- CHAPTER 2: MEMORIES -->
+        <section class="py-24 px-6 max-w-6xl mx-auto">
             <div class="text-center mb-16 space-y-2">
                 <span class="text-[#e2c08d] font-script text-3xl">Chapter II</span>
                 <h2 class="font-serif-title text-3xl sm:text-4xl text-white tracking-wide">Captured Moments</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-4 rounded-2xl glass-card-interactive flex flex-col items-center text-center">
-                    <div class="w-full h-64 rounded-lg bg-slate-900 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400 relative overflow-hidden group">
+                <div class="glass-card p-4 rounded-2xl flex flex-col items-center text-center memory-card">
+                    <div class="w-full h-64 rounded-lg bg-slate-900/80 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400">
                         <i data-lucide="image" class="w-8 h-8 mb-2 text-[#e2c08d]"></i>
                         <span class="text-xs tracking-wider uppercase">Photo Placeholder</span>
-                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image source</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image tag</span>
                     </div>
                     <p class="font-script text-2xl text-[#f3d2c1] mt-4">Your Unmatched Smile</p>
                     <p class="text-xs text-slate-400 font-light mt-1">The warmth that brightens my darkest days.</p>
                 </div>
 
-                <div class="glass-card p-4 rounded-2xl glass-card-interactive flex flex-col items-center text-center">
-                    <div class="w-full h-64 rounded-lg bg-slate-900 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400 relative overflow-hidden group">
+                <div class="glass-card p-4 rounded-2xl flex flex-col items-center text-center memory-card">
+                    <div class="w-full h-64 rounded-lg bg-slate-900/80 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400">
                         <i data-lucide="image" class="w-8 h-8 mb-2 text-[#e2c08d]"></i>
                         <span class="text-xs tracking-wider uppercase">Photo Placeholder</span>
-                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image source</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image tag</span>
                     </div>
                     <p class="font-script text-2xl text-[#f3d2c1] mt-4">Adventures Together</p>
                     <p class="text-xs text-slate-400 font-light mt-1">Every step taken by your side feels like home.</p>
                 </div>
 
-                <div class="glass-card p-4 rounded-2xl glass-card-interactive flex flex-col items-center text-center">
-                    <div class="w-full h-64 rounded-lg bg-slate-900 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400 relative overflow-hidden group">
+                <div class="glass-card p-4 rounded-2xl flex flex-col items-center text-center memory-card">
+                    <div class="w-full h-64 rounded-lg bg-slate-900/80 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400">
                         <i data-lucide="image" class="w-8 h-8 mb-2 text-[#e2c08d]"></i>
                         <span class="text-xs tracking-wider uppercase">Photo Placeholder</span>
-                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image source</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image tag</span>
                     </div>
                     <p class="font-script text-2xl text-[#f3d2c1] mt-4">Quiet Perfection</p>
                     <p class="text-xs text-slate-400 font-light mt-1">Finding peace in the gentle stillness with you.</p>
@@ -219,31 +209,30 @@
             </div>
         </section>
 
+        <!-- CHAPTER 3: HIDDEN SURPRISE -->
         <section class="py-20 px-6 max-w-3xl mx-auto text-center relative">
             <div id="firefly-container" class="absolute inset-0 pointer-events-none"></div>
 
             <div class="glass-card p-8 sm:p-12 rounded-3xl relative overflow-hidden border border-[#e2c08d]/30">
-                <div class="inline-p-3 rounded-full bg-[#e2c08d]/10 text-[#e2c08d] mb-4 inline-block">
-                    <i data-lucide="sparkles" class="w-6 h-6"></i>
-                </div>
                 <h3 class="font-serif-title text-2xl text-white mb-2">A Hidden Wish</h3>
                 <p class="text-slate-300 text-sm mb-6 max-w-md mx-auto">
                     Click the star constellation below to reveal a secret written only for you, Kushi.
                 </p>
 
-                <button id="secret-star-btn" class="p-4 rounded-full border border-[#e2c08d]/40 text-[#e2c08d] hover:bg-[#e2c08d]/10 transition-all duration-300 transform hover:scale-110 focus:outline-none">
+                <button id="secret-star-btn" class="p-4 rounded-full border border-[#e2c08d]/40 text-[#e2c08d] hover:bg-[#e2c08d]/10 transition-all duration-300">
                     <i data-lucide="star" class="w-8 h-8 fill-current text-[#e2c08d] animate-pulse"></i>
                 </button>
 
                 <div id="secret-message" class="hidden mt-6 pt-6 border-t border-white/10 text-left space-y-3">
                     <p class="font-script text-3xl text-[#e2c08d]">My Dearest Kushi,</p>
                     <p class="text-slate-300 text-sm leading-relaxed font-light">
-                        If you ever wonder why I created this universe for you, it is because standard words were never enough to hold what I feel. You are my safe harbor, my greatest adventure, and my favorite place in this entire world.
+                        If you ever wonder why I created this universe for you, it is because standard words were never enough. You are my safe harbor, my greatest adventure, and my favorite place in this entire world.
                     </p>
                 </div>
             </div>
         </section>
 
+        <!-- CHAPTER 4: PROPOSAL REVEAL -->
         <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 py-24 relative">
             <div class="max-w-4xl space-y-8 glass-card p-8 sm:p-16 rounded-3xl border border-[#e2c08d]/40 shadow-2xl relative z-20">
                 <span class="text-[#e2c08d] font-script text-4xl block">Chapter IV</span>
@@ -257,11 +246,8 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                    <button id="proposal-yes-btn" class="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#e2c08d] to-[#f3d2c1] text-[#0a0b10] font-semibold tracking-wider text-sm uppercase shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                    <button id="proposal-yes-btn" class="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#e2c08d] to-[#f3d2c1] text-[#0a0b10] font-semibold tracking-wider text-sm uppercase shadow-lg hover:scale-105 transition-all duration-300">
                         Yes, I Will!
-                    </button>
-                    <button id="proposal-forever-btn" class="w-full sm:w-auto px-10 py-4 rounded-full border border-[#e2c08d] text-[#e2c08d] hover:bg-[#e2c08d]/10 font-semibold tracking-wider text-sm uppercase transition-all duration-300">
-                        Let's Begin Our Story
                     </button>
                 </div>
 
@@ -273,9 +259,12 @@
         </section>
     </main>
 
+    <!-- ROBUST SCRIPT EXECUTION -->
     <script>
-        // 1. Initialize Lucide Icons
-        lucide.createIcons();
+        // 1. Initialize Icons Safely
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
         // 2. Audio Control System
         const music = document.getElementById('bg-music');
@@ -286,99 +275,113 @@
         musicBtn.addEventListener('click', () => {
             if (isPlaying) {
                 music.pause();
-                musicIcon.setAttribute('data-lucide', 'music-4');
+                if (musicIcon) musicIcon.setAttribute('data-lucide', 'music-4');
             } else {
-                music.play();
-                musicIcon.setAttribute('data-lucide', 'volume-2');
+                music.play().then(() => {
+                    if (musicIcon) musicIcon.setAttribute('data-lucide', 'volume-2');
+                }).catch(() => {});
             }
             isPlaying = !isPlaying;
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         });
 
-        // 3. Three.js Interactive 3D Starfield Universe
-        let scene, camera, renderer, starParticles;
-        let mouseX = 0, mouseY = 0;
+        // 3. Native Entry Trigger (Guaranteed Execution)
+        document.getElementById('begin-btn').addEventListener('click', () => {
+            const loader = document.getElementById('loader');
+            const main = document.getElementById('main-content');
+            
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                main.classList.remove('hidden');
+                initGSAPAnimations();
+                initFireflies();
+            }, 800);
 
-        function initThreeJS() {
-            const canvas = document.getElementById('webgl-canvas');
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
+            music.play().then(() => {
+                isPlaying = true;
+                if (musicIcon) musicIcon.setAttribute('data-lucide', 'volume-2');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }).catch(() => {});
+        });
 
-            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        // 4. Safe GSAP Scroll Animations
+        function initGSAPAnimations() {
+            if (typeof gsap === 'undefined') return;
 
-            // Create Stars Geometry
-            const starsCount = 1500;
-            const geometry = new THREE.BufferGeometry();
-            const positions = new Float32Array(starsCount * 3);
-            const colors = new Float32Array(starsCount * 3);
-
-            const colorPalette = [
-                new THREE.Color('#e2c08d'),
-                new THREE.Color('#f3d2c1'),
-                new THREE.Color('#b8b5d3'),
-                new THREE.Color('#ffffff')
-            ];
-
-            for (let i = 0; i < starsCount * 3; i += 3) {
-                positions[i] = (Math.random() - 0.5) * 15;
-                positions[i + 1] = (Math.random() - 0.5) * 15;
-                positions[i + 2] = (Math.random() - 0.5) * 15;
-
-                const chosenColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-                colors[i] = chosenColor.r;
-                colors[i + 1] = chosenColor.g;
-                colors[i + 2] = chosenColor.b;
+            if (typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
             }
 
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-            const material = new THREE.PointsMaterial({
-                size: 0.025,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.8
+            // Animate Timeline Items on Scroll
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach((item) => {
+                gsap.from(item, {
+                    scrollTrigger: typeof ScrollTrigger !== 'undefined' ? {
+                        trigger: item,
+                        start: "top 85%"
+                    } : null,
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    ease: "power2.out"
+                });
             });
 
-            starParticles = new THREE.Points(geometry, material);
-            scene.add(starParticles);
-
-            window.addEventListener('resize', onWindowResize);
-            document.addEventListener('mousemove', onDocumentMouseMove);
+            // Animate Memory Cards
+            const memoryCards = document.querySelectorAll('.memory-card');
+            memoryCards.forEach((card, index) => {
+                gsap.from(card, {
+                    scrollTrigger: typeof ScrollTrigger !== 'undefined' ? {
+                        trigger: card,
+                        start: "top 85%"
+                    } : null,
+                    opacity: 0,
+                    y: 30,
+                    duration: 0.8,
+                    delay: index * 0.15,
+                    ease: "power2.out"
+                });
+            });
         }
 
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        // 5. Fireflies Ambient Generator
+        function initFireflies() {
+            const container = document.getElementById('firefly-container');
+            if (!container) return;
+            const count = 10;
+            for (let i = 0; i < count; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.left = `${Math.random() * 100}%`;
+                firefly.style.top = `${Math.random() * 100}%`;
+                firefly.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(firefly);
+            }
         }
 
-        function onDocumentMouseMove(event) {
-            mouseX = (event.clientX - window.innerWidth / 2) * 0.0005;
-            mouseY = (event.clientY - window.innerHeight / 2) * 0.0005;
-        }
+        // 6. Interactive Secret Message
+        document.getElementById('secret-star-btn').addEventListener('click', () => {
+            const msg = document.getElementById('secret-message');
+            msg.classList.toggle('hidden');
+            if (!msg.classList.contains('hidden') && typeof gsap !== 'undefined') {
+                gsap.from(msg, { opacity: 0, y: 10, duration: 0.6 });
+            }
+        });
 
-        function animateThreeJS() {
-            requestAnimationFrame(animateThreeJS);
+        // 7. Confetti Celebration Trigger
+        document.getElementById('proposal-yes-btn').addEventListener('click', () => {
+            document.getElementById('proposal-yes-btn').style.display = 'none';
+            const celebration = document.getElementById('celebration-screen');
+            celebration.classList.remove('hidden');
 
-            if (starParticles) {
-                starParticles.rotation.y += 0.0008;
-                starParticles.rotation.x += 0.0004;
-
-                // Subtle parallax shift based on cursor move
-                starParticles.rotation.y += (mouseX - starParticles.rotation.y) * 0.05;
-                starParticles.rotation.x += (mouseY - starParticles.rotation.x) * 0.05;
+            if (typeof gsap !== 'undefined') {
+                gsap.from(celebration, { opacity: 0, y: 20, duration: 0.8 });
             }
 
-            renderer.render(scene, camera);
-        }
-
-        // Initialize WebGL Universe
-        try {
-            initThreeJS();
-            animateThreeJS();
-        } catch (e) {
-            console.warn("WebGL not supported, falling back to clean gra
+            if (typeof confetti !== 'undefined') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                  
