@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Kushi | A Cosmos in Bloom</title>
-
+    <title>For Kushi | Our Infinite Story</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        night: '#080711',
-                        violetDark: '#120E2E',
-                        roseGold: '#E0A96D',
-                        softPink: '#F7C5CC',
-                        starGold: '#F4E04D'
+                        midnight: '#080B15',
+                        deepNavy: '#0F1426',
+                        champagne: '#E5C3A6',
+                        blush: '#F4C2C2',
+                        ivory: '#F9F8F6',
+                        lavender: '#A7A4E0'
                     },
                     fontFamily: {
                         serif: ['"Cormorant Garamond"', 'serif'],
-                        sans: ['"Inter"', 'sans-serif']
+                        sans: ['"Montserrat"', 'sans-serif']
                     }
                 }
             }
@@ -35,14 +38,49 @@
 
     <style>
         body {
-            background-color: #080711;
-            color: #E2E8F0;
+            background-color: #080B15;
+            color: #F9F8F6;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            font-family: 'Inter', sans-serif;
         }
 
-        /* Ambient Cosmic Background */
-        #starfield {
+        /* Glassmorphism Styles */
+        .glass-panel {
+            background: rgba(15, 20, 38, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 195, 166, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(249, 248, 246, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 195, 166, 0.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(229, 195, 166, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(229, 195, 166, 0.1);
+        }
+
+        /* Gold Gradient Text */
+        .gold-gradient {
+            background: linear-gradient(135deg, #FFF0E5 0%, #E5C3A6 50%, #C49A76 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pink-gradient {
+            background: linear-gradient(135deg, #F9F8F6 0%, #F4C2C2 50%, #A7A4E0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Canvas Overlay */
+        #bgCanvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -52,315 +90,259 @@
             pointer-events: none;
         }
 
-        .glass-card {
-            background: rgba(18, 14, 46, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(224, 169, 109, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .glow-text {
-            text-shadow: 0 0 20px rgba(224, 169, 109, 0.4);
-        }
-
-        /* Subtle Floating Animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(1deg); }
-        }
-
-        .animate-float {
-            animation: float 7s ease-in-out infinite;
-        }
-
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #080711;
+            background: #080B15;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1F1A3A;
+            background: #1A2138;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #E0A96D;
+            background: #E5C3A6;
         }
     </style>
 </head>
-<body class="relative selection:bg-roseGold selection:text-night">
+<body class="relative selection:bg-champagne selection:text-midnight">
 
-    <canvas id="starfield"></canvas>
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="fixed top-6 right-6 z-50">
+        <button id="audioToggle" class="glass-panel p-3 rounded-full text-champagne hover:text-ivory transition-colors flex items-center gap-2 px-4 text-xs tracking-widest uppercase border border-champagne/20">
+            <i data-lucide="music" class="w-4 h-4"></i>
+            <span id="audioStatus">Sound On</span>
+        </button>
+        <audio id="bgAudio" loop preload="auto">
+            <source src="https://assets.mixkit.co/music/preview/mixkit-a-very-happy-gospel-114.mp3" type="audio/mpeg">
+        </audio>
+    </div>
 
     <main class="relative z-10">
 
-        <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative">
-            <div class="animate-float max-w-4xl">
-                <span class="text-roseGold tracking-[0.3em] uppercase text-xs sm:text-sm font-medium mb-4 block">To the center of my universe</span>
-                <h1 class="font-serif text-6xl sm:text-8xl md:text-9xl font-light text-transparent bg-clip-text bg-gradient-to-r from-softPink via-roseGold to-starGold glow-text mb-6">
+        <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
+            <div class="max-w-4xl mx-auto space-y-6 animate-fade-in">
+                <span class="text-champagne/80 tracking-[0.4em] text-xs sm:text-sm uppercase font-light">An Unforgettable Journey</span>
+                <h1 class="font-serif text-6xl sm:text-8xl md:text-9xl font-light tracking-wide gold-gradient">
                     Kushi
                 </h1>
-                <p class="text-lg sm:text-2xl font-serif italic text-slate-300 max-w-2xl mx-auto leading-relaxed">
-                    "In a ocean of stars, my heart found its constellation in you."
+                <p class="font-serif text-xl sm:text-2xl md:text-3xl text-ivory/80 italic max-w-2xl mx-auto leading-relaxed">
+                    "In the vastness of space and the passage of time, sharing this life with you is my favorite miracle."
                 </p>
-            </div>
-            
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
-                <span class="text-xs uppercase tracking-widest text-roseGold font-light">Scroll to Explore</span>
-                <div class="w-4 h-7 border border-roseGold/40 rounded-full flex justify-center p-1">
-                    <div class="w-1 h-2 bg-roseGold rounded-full animate-bounce"></div>
+                <div class="pt-8">
+                    <a href="#letter" class="inline-block glass-panel px-8 py-4 rounded-full text-champagne hover:bg-champagne hover:text-midnight transition-all duration-500 text-xs tracking-[0.2em] uppercase font-medium">
+                        Begin Our Story
+                    </a>
                 </div>
             </div>
         </section>
 
-
-        <section class="py-24 px-6 max-w-4xl mx-auto">
-            <div class="glass-card rounded-2xl p-8 sm:p-14 relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-roseGold/10 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <h2 class="font-serif text-3xl sm:text-4xl text-roseGold mb-8 border-b border-roseGold/20 pb-4 italic">
-                    My Dearest Kushi,
-                </h2>
-                
-                <div class="space-y-6 text-slate-300 font-light text-base sm:text-lg leading-relaxed">
+        <section id="letter" class="py-32 px-6 max-w-4xl mx-auto">
+            <div class="glass-panel p-8 sm:p-16 rounded-3xl relative">
+                <div class="absolute -top-6 -left-6 text-champagne/20 font-serif text-9xl select-none leading-none">“</div>
+                <h2 class="font-serif text-3xl sm:text-4xl text-champagne mb-8 italic">My Dearest Kushi,</h2>
+                <div class="space-y-6 text-ivory/80 font-light leading-relaxed text-base sm:text-lg">
                     <p>
-                        If the universe is built on whispers of light and quiet wonders, then meeting you was the moment my world finally learned how to speak.
+                        From the moment our paths crossed, the cadence of my life changed forever. You came into my world not like a sudden storm, but like the gentle morning light—softly, brilliantly, and making everything around you bloom.
                     </p>
                     <p>
-                        From the very beginning, your presence has felt like sunlight breaking through dense leaves—warm, unhurried, and full of life. Loving you is not a sudden spark; it is the slow, steady blooming of a garden I never knew I was waiting to tend. You bring a gentle grace to my quiet moments and an electric joy to every adventure we share.
+                        In your laugh, I found a home I never knew I was searching for. In your eyes, I see a future full of warmth, quiet moments, and wild adventures. loving you has been the simplest, most natural, and most profoundly meaningful thing I have ever done.
                     </p>
                     <p>
-                        You are my favorite constellation. No matter where life takes us, my eyes always find their way back to you.
+                        This page is a small canvas dedicated to you—a collection of our memories, our dreams, and the endless space you occupy in my heart.
                     </p>
+                </div>
+                <div class="mt-10 pt-6 border-t border-champagne/10 text-right">
+                    <span class="font-serif text-xl text-champagne italic">With all my love, always</span>
                 </div>
             </div>
         </section>
 
+        <section class="py-32 px-6 max-w-5xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-lavender tracking-[0.3em] text-xs uppercase block mb-2">Milestones</span>
+                <h2 class="font-serif text-4xl sm:text-5xl pink-gradient">Moments Etched in Time</h2>
+            </div>
 
-        <section class="py-24 px-6 max-w-6xl mx-auto">
+            <div class="space-y-12 relative before:absolute before:inset-0 before:left-1/2 before:-translate-x-px before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-champagne/20 before:to-transparent">
+                
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-champagne/30 text-champagne shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    </div>
+                    <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-2xl">
+                        <span class="text-xs text-champagne tracking-widest uppercase font-medium">Chapter I</span>
+                        <h3 class="font-serif text-2xl text-ivory mt-1 mb-2">The First Spark</h3>
+                        <p class="text-sm text-ivory/70 font-light leading-relaxed">The day we first spoke. A conversation that felt effortless, endless, and entirely unforgettable.</p>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-champagne/30 text-champagne shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <i data-lucide="heart" class="w-4 h-4"></i>
+                    </div>
+                    <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-2xl">
+                        <span class="text-xs text-champagne tracking-widest uppercase font-medium">Chapter II</span>
+                        <h3 class="font-serif text-2xl text-ivory mt-1 mb-2">Realizing It Was You</h3>
+                        <p class="text-sm text-ivory/70 font-light leading-relaxed">The quiet realization that my happiest moments were all the ones spent by your side.</p>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-champagne/30 text-champagne shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <i data-lucide="compass" class="w-4 h-4"></i>
+                    </div>
+                    <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-2xl">
+                        <span class="text-xs text-champagne tracking-widest uppercase font-medium">Chapter III</span>
+                        <h3 class="font-serif text-2xl text-ivory mt-1 mb-2">Shared Horizons</h3>
+                        <p class="text-sm text-ivory/70 font-light leading-relaxed">Navigating life together, learning your dreams, and realizing our paths were meant to merge.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-32 px-6 max-w-6xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="font-serif text-4xl sm:text-5xl text-softPink mb-4">Our Cosmic Journey</h2>
-                <p class="text-slate-400 max-w-xl mx-auto font-light">Four pillars that define the love and adventure we share.</p>
+                <span class="text-blush tracking-[0.3em] text-xs uppercase block mb-2">The Sanctuary</span>
+                <h2 class="font-serif text-4xl sm:text-5xl gold-gradient">Kushi’s Botanical Garden</h2>
+                <p class="text-ivory/60 max-w-md mx-auto text-sm font-light mt-4">Hover over each bloom to reveal what it symbolizes in our relationship.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-2xl text-center group">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full glass-panel flex items-center justify-center text-blush group-hover:scale-110 transition-transform">
+                        <i data-lucide="flower-2" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl text-champagne mb-2">White Rose</h3>
+                    <p class="text-xs text-lavender tracking-widest uppercase mb-4">Purity & Devotion</p>
+                    <p class="text-sm text-ivory/70 font-light leading-relaxed">Symbolizing the sincerity and elegance that you bring into my life every single day.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl text-center group">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full glass-panel flex items-center justify-center text-blush group-hover:scale-110 transition-transform">
+                        <i data-lucide="sun" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl text-champagne mb-2">Golden Peony</h3>
+                    <p class="text-xs text-lavender tracking-widest uppercase mb-4">Prosperity & Joy</p>
+                    <p class="text-sm text-ivory/70 font-light leading-relaxed">Representing the joy ('Kushi') that radiates from you and brightens even the darkest days.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl text-center group">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full glass-panel flex items-center justify-center text-blush group-hover:scale-110 transition-transform">
+                        <i data-lucide="moon" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl text-champagne mb-2">Night Jasmine</h3>
+                    <p class="text-xs text-lavender tracking-widest uppercase mb-4">Grace & Wonder</p>
+                    <p class="text-sm text-ivory/70 font-light leading-relaxed">A gentle reminder of our quiet late-night conversations under the stars.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-6 max-w-4xl mx-auto text-center relative">
+            <div class="glass-panel p-12 sm:p-20 rounded-3xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-lavender/5 to-transparent pointer-events-none"></div>
+                <i data-lucide="stars" class="w-12 h-12 text-champagne mx-auto mb-6 opacity-80"></i>
+                <h2 class="font-serif text-4xl sm:text-6xl gold-gradient mb-6">Written in the Stars</h2>
+                <p class="text-ivory/80 font-light text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+                    Ancient astronomers believed constellations held the secrets of the world. If I were to map my own universe, every star would lead directly back to you.
+                </p>
+                <div class="inline-block glass-card px-6 py-3 rounded-full text-xs text-champagne tracking-widest uppercase">
+                    Coordinates: Always By Your Side
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-6 max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-champagne tracking-[0.3em] text-xs uppercase block mb-2">The Future</span>
+                <h2 class="font-serif text-4xl sm:text-5xl pink-gradient">Adventures Awaiting Us</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-8 rounded-xl hover:border-roseGold/40 transition-all duration-300 group">
-                    <div class="w-12 h-12 rounded-full bg-roseGold/10 flex items-center justify-center mb-6 text-roseGold group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                <div class="glass-card p-8 rounded-2xl flex items-start gap-6">
+                    <div class="p-4 rounded-xl glass-panel text-champagne shrink-0">
+                        <i data-lucide="plane" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="font-serif text-2xl text-roseGold mb-3">The Constant Warmth</h3>
-                    <p class="text-slate-300 font-light text-sm leading-relaxed">
-                        Like the sun guiding flowers toward bloom, your kindness turns ordinary days into something brilliant and warm.
-                    </p>
+                    <div>
+                        <h3 class="font-serif text-2xl text-ivory mb-2">Exploring New Cities</h3>
+                        <p class="text-sm text-ivory/70 font-light leading-relaxed">Walking through unfamiliar cobblestone streets, trying new cafes, and getting lost together in foreign worlds.</p>
+                    </div>
                 </div>
 
-                <div class="glass-card p-8 rounded-xl hover:border-roseGold/40 transition-all duration-300 group">
-                    <div class="w-12 h-12 rounded-full bg-roseGold/10 flex items-center justify-center mb-6 text-roseGold group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.5a2.5 2.5 0 002.5-2.5V11.414M15 20.488V18a2 2 0 012-2h3.064" /></svg>
+                <div class="glass-card p-8 rounded-2xl flex items-start gap-6">
+                    <div class="p-4 rounded-xl glass-panel text-champagne shrink-0">
+                        <i data-lucide="mountain" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="font-serif text-2xl text-roseGold mb-3">Uncharted Horizons</h3>
-                    <p class="text-slate-300 font-light text-sm leading-relaxed">
-                        I don't just want the quiet days with you—I want the wild, adventurous ones too. Climbing peaks, exploring cities, and walking every path side by side.
-                    </p>
-                </div>
-
-                <div class="glass-card p-8 rounded-xl hover:border-roseGold/40 transition-all duration-300 group">
-                    <div class="w-12 h-12 rounded-full bg-roseGold/10 flex items-center justify-center mb-6 text-roseGold group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                    <div>
+                        <h3 class="font-serif text-2xl text-ivory mb-2">Mountain Sunrises</h3>
+                        <p class="text-sm text-ivory/70 font-light leading-relaxed">Watching the dawn break over quiet peaks, wrapped in blankets, holding warm cups of coffee.</p>
                     </div>
-                    <h3 class="font-serif text-2xl text-roseGold mb-3">Guiding Light</h3>
-                    <p class="text-slate-300 font-light text-sm leading-relaxed">
-                        In moments of uncertainty, your perspective brings clarity. You are the Polaris to my compass, steady and bright.
-                    </p>
-                </div>
-
-                <div class="glass-card p-8 rounded-xl hover:border-roseGold/40 transition-all duration-300 group">
-                    <div class="w-12 h-12 rounded-full bg-roseGold/10 flex items-center justify-center mb-6 text-roseGold group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                    </div>
-                    <h3 class="font-serif text-2xl text-roseGold mb-3">An Ever-Growing Bloom</h3>
-                    <p class="text-slate-300 font-light text-sm leading-relaxed">
-                        Our bond deepens with every passing season. To love you is a continuous journey of discovery and joy.
-                    </p>
                 </div>
             </div>
         </section>
 
+        <section class="py-32 px-6 max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-lavender tracking-[0.3em] text-xs uppercase block mb-2">Gallery</span>
+                <h2 class="font-serif text-4xl sm:text-5xl gold-gradient">Treasured Moments</h2>
+            </div>
 
-        <section class="py-24 px-6 max-w-4xl mx-auto text-center">
-            <h2 class="font-serif text-4xl sm:text-5xl text-softPink mb-6">Fragments of Light</h2>
-            <p class="text-slate-400 font-light mb-10">Click below to reveal a reason why you mean the world to me.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-64 bg-deepNavy/80 flex flex-col items-center justify-center p-6 text-center border-b border-champagne/10 relative">
+                        <i data-lucide="image" class="w-8 h-8 text-champagne/40 mb-2"></i>
+                        <span class="text-xs text-champagne/60 tracking-wider uppercase">[ Place Personal Photo Here ]</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl text-ivory mb-1">A Quiet Afternoon</h4>
+                        <p class="text-xs text-ivory/60 font-light">Simple moments that mean the world.</p>
+                    </div>
+                </div>
 
-            <div class="glass-card rounded-2xl p-10 min-h-[200px] flex flex-col items-center justify-center relative">
-                <p id="reason-text" class="font-serif text-2xl text-roseGold italic transition-opacity duration-500">
-                    "Your laugh is my favorite sound in the whole universe."
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-64 bg-deepNavy/80 flex flex-col items-center justify-center p-6 text-center border-b border-champagne/10 relative">
+                        <i data-lucide="image" class="w-8 h-8 text-champagne/40 mb-2"></i>
+                        <span class="text-xs text-champagne/60 tracking-wider uppercase">[ Place Personal Photo Here ]</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl text-ivory mb-1">Under the Stars</h4>
+                        <p class="text-xs text-ivory/60 font-light">Late night laughter and endless dreams.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-64 bg-deepNavy/80 flex flex-col items-center justify-center p-6 text-center border-b border-champagne/10 relative">
+                        <i data-lucide="image" class="w-8 h-8 text-champagne/40 mb-2"></i>
+                        <span class="text-xs text-champagne/60 tracking-wider uppercase">[ Place Personal Photo Here ]</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl text-ivory mb-1">Our Favorite Gateway</h4>
+                        <p class="text-xs text-ivory/60 font-light">Escaping into nature together.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-6 max-w-4xl mx-auto text-center">
+            <span class="text-blush tracking-[0.3em] text-xs uppercase block mb-2">Reflections</span>
+            <h2 class="font-serif text-4xl sm:text-5xl pink-gradient mb-12">Reasons I Love You</h2>
+
+            <div id="reasonCard" class="glass-panel p-10 sm:p-16 rounded-3xl min-h-[220px] flex flex-col items-center justify-center relative transition-all duration-500">
+                <p id="reasonText" class="font-serif text-2xl sm:text-3xl text-champagne italic font-light leading-relaxed">
+                    "The gentle warmth and kindness you offer to everyone around you."
                 </p>
-                <button onclick="nextReason()" class="mt-8 px-6 py-2.5 rounded-full border border-roseGold/40 text-roseGold hover:bg-roseGold hover:text-night transition-all text-xs tracking-widest uppercase">
-                    Discover Another
+            </div>
+
+            <div class="mt-8">
+                <button onclick="nextReason()" class="glass-card px-8 py-3 rounded-full text-xs tracking-widest text-champagne uppercase hover:bg-champagne/10 transition-colors border border-champagne/20">
+                    Discover Another Reason
                 </button>
             </div>
         </section>
 
-
-        <section class="py-32 px-6 text-center relative">
-            <div class="max-w-3xl mx-auto glass-card rounded-3xl p-10 sm:p-16 border border-roseGold/30 relative">
-                <div class="inline-block p-3 rounded-full bg-roseGold/10 text-roseGold mb-6">
-                    ✨
-                </div>
-                
-                <h2 class="font-serif text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-softPink via-roseGold to-starGold mb-6 leading-tight">
-                    Kushi, Will You Walk This Journey With Me?
-                </h2>
-                
-                <p class="text-slate-300 font-light text-lg mb-10 max-w-xl mx-auto">
-                    Let’s build a life full of flower garden mornings, midnight starlight, and endless adventure.
-                </p>
-
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-                    <button id="yesBtn" onclick="handleYes()" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-roseGold to-softPink text-night font-medium rounded-full shadow-lg hover:shadow-roseGold/30 hover:scale-105 transition-all text-lg">
-                        Yes, Forever ✨
-                    </button>
-                </div>
-
-                <div id="responseMessage" class="hidden mt-10 p-6 rounded-2xl bg-roseGold/10 border border-roseGold/30">
-                    <h3 class="font-serif text-3xl text-starGold mb-2">My Heart is Yours! ❤️</h3>
-                    <p class="text-slate-200 font-light">Here’s to our greatest adventure yet, Kushi.</p>
-                </div>
-            </div>
-        </section>
-
-        <footer class="py-10 text-center text-xs text-slate-500 font-light tracking-widest uppercase">
-            Crafted with love for Kushi • Designed for Eternity
-        </footer>
-
-    </main>
-
-    <script>
-        // Starfield & Flower Petal Particle Canvas Animation
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.3;
-                this.speedY = Math.random() * 0.5 + 0.1;
-                this.opacity = Math.random() * 0.7 + 0.3;
-                this.color = Math.random() > 0.3 ? '#E0A96D' : '#F7C5CC';
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.y > height) {
-                    this.y = 0;
-                    this.x = Math.random() * width;
-                }
-                if (this.x > width || this.x < 0) {
-                    this.x = Math.random() * width;
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = this.color;
-                ctx.fill();
-                ctx.globalAlpha = 1.0;
-            }
-        }
-
-        // Initialize 120 particles
-        for (let i = 0; i < 120; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        // Reasons Carousel Data & Interaction
-        const reasons = [
-            "\"Your laugh is my favorite sound in the whole universe.\"",
-            "\"The quiet strength you show in everything you do inspires me every day.\"",
-            "\"How you look at the stars with genuine wonder in your eyes.\"",
-            "\"The gentle warmth you bring whenever you walk into a room.\"",
-            "\"How effortlessly you make every small moment feel like a grand adventure.\"",
-            "\"Simply because you are Kushi—my favorite part of every day.\""
-        ];
-
-        let currentReasonIndex = 0;
-
-        function nextReason() {
-            const textElement = document.getElementById('reason-text');
-            textElement.style.opacity = 0;
-            
-            setTimeout(() => {
-                currentReasonIndex = (currentReasonIndex + 1) % reasons.length;
-                textElement.innerText = reasons[currentReasonIndex];
-                textElement.style.opacity = 1;
-            }, 300);
-        }
-
-        // Proposal 'Yes' Button Action
-        function handleYes() {
-            const response = document.getElementById('responseMessage');
-            response.classList.remove('hidden');
-
-            // Trigger Confetti Celebration
-            const duration = 4 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
-
-                const particleCount = 50 * (timeLeft / duration);
-
-                // Confetti bursts from both sides
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
-    </script>
-</body>
-    </html>
-    
+        <section class="py-32 px-6 max-w-4xl mx-auto text-center relative">
+            <div class="glass-panel p-12 sm:p-20 rounded-3xl border border-champagne/30 relative">
+                <span class="text-champagne tracking-[0.4em] text-xs uppercase block mb-
