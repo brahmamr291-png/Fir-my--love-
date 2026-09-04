@@ -1,267 +1,634 @@
-<!DOCTYPE html>
+            <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Favorite Human 🐾</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
-            min-height: 100dvh; 
-        }
-        .cursive {
-            font-family: 'Dancing Script', cursive;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(3deg); }
-        }
-        .floating-cat {
-            animation: float 3s ease-in-out infinite;
-        }
-        .card-expand {
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .photobooth-frame {
-            background: white;
-            padding: 10px 10px 20px 10px;
-            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.15);
-            transform: rotate(-1.5deg);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Little Something For Kushi ❤️</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet" />
 </head>
-<body class="w-full flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-x-hidden selection:bg-rose-200 my-6">
+<body>
 
-    <!-- Card Wrapper -->
-    <div id="main-card" class="card-expand bg-white/85 backdrop-blur-md rounded-[2.5rem] shadow-xl border border-rose-100 p-6 sm:p-8 md:p-10 w-full max-w-md mx-auto text-center relative">
-        
-        <!-- Decorative Floating Cats -->
-        <div class="absolute -top-10 left-3 text-3xl sm:text-4xl floating-cat opacity-90">🐱</div>
-        <div class="absolute -top-8 right-3 text-3xl sm:text-4xl floating-cat opacity-90" style="animation-delay: 1.5s;">🐾</div>
-
-        <!-- SCREEN 1: THE WELCOME -->
-        <div id="screen-1" class="flex flex-col items-center justify-center space-y-6 py-4">
-            <div class="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center">
-                <div class="absolute inset-0 bg-rose-300 rounded-full animate-ping opacity-20"></div>
-                <div class="w-full h-full rounded-full bg-rose-50 border-4 border-white shadow-md flex items-center justify-center text-5xl">
-                    ✉️
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <h1 class="text-2xl sm:text-3xl font-bold text-rose-600 tracking-tight">Hey NISHA ... ✨</h1>
-                <p class="text-sm sm:text-base text-gray-600 font-medium px-2">A tiny kitten whispered that there is a special delivery and an apology waiting inside for you.</p>
-            </div>
-
-            <button onclick="nextScreen()" class="w-full sm:w-auto bg-rose-500 hover:bg-rose-600 text-white font-bold py-3.5 px-8 rounded-full shadow-lg hover:shadow-rose-300/50 transition-all duration-300 transform active:scale-95 cursor-pointer flex items-center justify-center gap-2 text-base sm:text-lg group">
-                <span>Open my heart</span>
-                <i class="fa-solid fa-heart animate-pulse text-white group-hover:scale-125 transition-transform"></i>
-            </button>
-        </div>
-
-        <!-- SCREEN 2: PHOTOBOOTH, LETTER & MUSIC -->
-        <div id="screen-2" class="hidden flex flex-col space-y-5 animate-fade-in">
-            
-            <!-- PHOTOBOOTH STRIP SECTION -->
-            <div class="photobooth-frame rounded-2xl border border-rose-100 flex flex-col gap-2">
-                <!-- PHOTO 1 -->
-                <div class="w-full rounded-lg overflow-hidden border border-gray-100 aspect-[16/10] bg-rose-50">
-                    <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=600&auto=format&fit=crop" 
-                         alt="Lakshita Photo 1" class="w-full h-full object-cover" />
-                </div>
-                <!-- PHOTO 2 -->
-                <div class="w-full rounded-lg overflow-hidden border border-gray-100 aspect-[16/10] bg-rose-50">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" 
-                         alt="Lakshita Photo 2" class="w-full h-full object-cover" />
-                </div>
-                <div class="text-xs font-bold text-rose-500 tracking-wider uppercase mt-1">Us & Our Favorite Moments 📸❤️</div>
-            </div>
-
-            <!-- Header -->
-            <div class="flex items-center justify-center gap-2">
-                <span id="cat-emoji" class="text-3xl transition-transform duration-300 select-none">🥺</span>
-                <h2 class="cursive text-3xl sm:text-4xl text-rose-600 font-bold tracking-wide">My Dearest Lakshita,</h2>
-                <span class="text-2xl">✨</span>
-            </div>
-            
-            <!-- Love & Apology Letter -->
-            <div class="text-left text-gray-700 space-y-3.5 text-sm md:text-base bg-rose-50/40 p-4 sm:p-5 rounded-2xl border border-rose-100/50 max-h-[28vh] overflow-y-auto custom-scrollbar leading-relaxed">
-                <p class="flex items-start gap-3">
-                    <span class="text-rose-400 shrink-0 text-base">🐾</span>
-                    <span>First, I want to say **I am so deeply sorry for yesterday**. I hate that I didn't message you properly and made you feel neglected even for a second. You mean the entire world to me, and leaving you feeling ignored breaks my heart.</span>
-                </p>
-                <p class="flex items-start gap-3">
-                    <span class="text-rose-400 shrink-0 text-base">🐾</span>
-                    <span>Please know it was never intentional—you are constantly on my mind, even when I'm distracted or busy. Life feels incomplete and restless whenever I'm not connected with you.</span>
-                </p>
-                <p class="flex items-start gap-3">
-                    <span class="text-rose-400 shrink-0 text-base">🐾</span>
-                    <span>You bring so much magic, warmth, and grace into my life. Every smile of yours lights up my darkest days, and I promise to cherish, respect, and prioritize you so much better every single day.</span>
-                </p>
-                <p class="flex items-start gap-3">
-                    <span class="text-rose-400 shrink-0 text-base">🐾</span>
-                    <span>Will you forgive your silly human and let me make it up to you today? ❤️</span>
-                </p>
-            </div>
-
-            <!-- HINDI ROMANTIC AUDIO PLAYER -->
-            <div class="w-full bg-rose-50/90 p-4 rounded-2xl border border-rose-200 text-center space-y-3 shadow-sm">
-                <div class="flex items-center justify-between px-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl animate-pulse">🎶</span>
-                        <div class="text-left">
-                            <p class="text-xs font-bold text-rose-600">Special Hindi Romantic Song</p>
-                            <p class="text-xs text-gray-500 font-medium">Playing for NISHA 💖</p>
-                        </div>
-                    </div>
-                    <button id="play-btn" onclick="toggleAudio()" class="bg-rose-500 hover:bg-rose-600 text-white rounded-full p-3 w-10 h-10 flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer">
-                        <i id="play-icon" class="fa-solid fa-play text-sm"></i>
-                    </button>
-                </div>
-                <!-- Attached Hindi Romantic Track Stream -->
-                <audio id="romantic-audio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-love-112185.mp3"></audio>
-            </div>
-
-            <!-- Proposal Question -->
-            <p class="text-base sm:text-lg font-bold text-gray-800 px-1 mt-1">
-                Will you forgive me, make me the happiest person, and be mine? 💍
-            </p>
-
-            <!-- Dynamic Buttons -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 relative min-h-[110px] sm:min-h-[55px] w-full" id="btn-container">
-                <button onclick="celebrate()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-6 rounded-full shadow-md shadow-emerald-100 transition-all text-base sm:text-lg cursor-pointer transform active:scale-95 order-1 flex items-center justify-center gap-2">
-                    <span>Yes, I forgive you!</span> ❤️
-                </button>
-                <button id="no-btn" onmouseover="moveNoButton()" onclick="moveNoButton()" ontouchstart="moveNoButton(event)" class="w-full bg-gray-400 text-white font-semibold py-3.5 px-6 rounded-full transition-all text-base sm:text-lg order-2 static sm:relative z-20 touch-none select-none">
-                    No 😿
-                </button>
-            </div>
-        </div>
-
-        <!-- SCREEN 3: SUCCESS CELEBRATION -->
-        <div id="screen-3" class="hidden flex flex-col items-center justify-center space-y-5 py-4 animate-scale-up">
-            <div class="text-5xl sm:text-6xl md:text-7xl animate-bounce tracking-widest select-none">💖🎉🐈</div>
-
-            <h2 class="cursive text-4xl sm:text-5xl text-rose-600 font-bold">She forgave me!</h2>
-            <p class="text-sm sm:text-base md:text-lg text-gray-700 font-medium px-2">My heart is completely overflowing, Lakshita. I love you to the moon and back, and I promise to take the best care of you! 🌙🐾</p>
-            
-            <div class="w-full p-4 bg-emerald-50/80 border border-emerald-100 rounded-2xl flex items-center justify-center gap-3">
-                <span class="text-3xl shrink-0">😸</span>
-                <p class="text-left text-xs sm:text-sm text-emerald-800 font-bold leading-tight">Forgiveness granted! Time to make wonderful new memories together! 🥂</p>
-            </div>
-        </div>
+  <!-- 1. PASSCODE / LOCK SCREEN -->
+  <section id="lock-screen" class="screen active">
+    <div class="lock-card">
+      <div class="heart-icon">❤️</div>
+      <div class="pin-display">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <p id="lock-message">For Kushi's Eyes Only 🔒</p>
+      <div class="keypad">
+        <button class="key" onclick="pressKey('1')">1</button>
+        <button class="key" onclick="pressKey('2')">2</button>
+        <button class="key" onclick="pressKey('3')">3</button>
+        <button class="key" onclick="pressKey('4')">4</button>
+        <button class="key" onclick="pressKey('5')">5</button>
+        <button class="key" onclick="pressKey('6')">6</button>
+        <button class="key" onclick="pressKey('7')">7</button>
+        <button class="key" onclick="pressKey('8')">8</button>
+        <button class="key" onclick="pressKey('9')">9</button>
+        <button class="key action" onclick="clearPin()">C</button>
+        <button class="key" onclick="pressKey('0')">0</button>
+        <button class="key action" onclick="pressKey('❤️')">❤️</button>
+      </div>
     </div>
+  </section>
 
-    <!-- Fullscreen Fluid Confetti Layer -->
-    <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+  <!-- MAIN CONTENT CONTAINER -->
+  <main id="main-content" class="hidden">
 
-    <script>
-        function nextScreen() {
-            const card = document.getElementById('main-card');
-            card.style.maxWidth = '520px'; 
-            
-            document.getElementById('screen-1').classList.add('hidden');
-            const screen2 = document.getElementById('screen-2');
-            screen2.classList.remove('hidden');
+    <!-- 2. FLOWER WREATH INTRO -->
+    <section class="flower-intro-section">
+      <div class="flower-wreath-container">
+        <div class="flower-ring">
+          <div class="flower f1">🌸</div>
+          <div class="flower f2">🌺</div>
+          <div class="flower f3">🌹</div>
+          <div class="flower f4">🌷</div>
+          <div class="flower f5">🌻</div>
+          <div class="flower f6">🌼</div>
+          <div class="flower f7">🌸</div>
+          <div class="flower f8">🌺</div>
+        </div>
+      </div>
+      <div class="scroll-hint">Scroll down for a surprise, Kushi ❤️</div>
+    </section>
 
-            // Autoplay music upon clicking 'Open my heart'
-            toggleAudio(true);
-        }
+    <!-- 3. POLAROID PHOTO GALLERY -->
+    <section class="gallery-section">
+      <h1 class="script-heading">I love you so much, Kushi baby ❤️</h1>
+      <div class="polaroid-grid">
+        <div class="polaroid rot-left">
+          <img src="https://picsum.photos/300/300?random=1" alt="Memory 1" />
+          <p>My Favorite Smile</p>
+        </div>
+        <div class="polaroid rot-right">
+          <img src="https://picsum.photos/300/300?random=2" alt="Memory 2" />
+          <p>Late Night Chats</p>
+        </div>
+        <div class="polaroid rot-left-more">
+          <img src="https://picsum.photos/300/300?random=3" alt="Memory 3" />
+          <p>Endless Laughter</p>
+        </div>
+        <div class="polaroid rot-right-more">
+          <img src="https://picsum.photos/300/300?random=4" alt="Memory 4" />
+          <p>Forever & Always</p>
+        </div>
+      </div>
+    </section>
 
-        function toggleAudio(forcePlay = false) {
-            const audio = document.getElementById('romantic-audio');
-            const icon = document.getElementById('play-icon');
+    <!-- 4. LOVE LETTER SECTION -->
+    <section class="letter-section">
+      <div class="letter-card">
+        <h2>My Dearest Kushi,</h2>
+        <p class="letter-text">
+          I am writing this because words sometimes catch in my throat when I look at you, overwhelmed by how much you mean to me. You bring so much light, warmth, and happiness into my world. Please keep this little page as a token of my heart.
+        </p>
+        <p class="letter-text">
+          You are my peace, my constant joy, and the brightest part of my life. No matter where we are or how long the journey, my heart belongs completely to you.
+        </p>
+        <div class="signature">
+          <p>Forever and always yours,</p>
+          <p class="handwriting">With all my love</p>
+        </div>
+      </div>
+    </section>
 
-            if (audio.paused || forcePlay) {
-                audio.play().then(() => {
-                    icon.className = 'fa-solid fa-pause text-sm';
-                }).catch((err) => {
-                    console.log("Audio autoplay waiting for user interaction:", err);
-                });
-            } else {
-                audio.pause();
-                icon.className = 'fa-solid fa-play text-sm';
-            }
-        }
+    <!-- 5. OUR TOP SONGS SECTION -->
+    <section class="music-section">
+      <h2 class="section-title">Our Top Songs</h2>
+      <p class="section-subtitle">THE SOUNDTRACK OF US</p>
+      
+      <div class="music-cards-container">
+        <div class="music-card">
+          <div class="album-art">
+            <img src="https://picsum.photos/120/120?random=10" alt="Iris" />
+          </div>
+          <div class="song-info">
+            <h3>Iris</h3>
+            <p>The Goo Goo Dolls</p>
+            <button class="play-btn" onclick="togglePlay(this)">▶ Save on Spotify</button>
+          </div>
+        </div>
 
-        let noCount = 0;
-        const catEmojis = ['🥺', '🙀', '😿', '😾', '🦁', '🐾', '😿'];
-        
-        function moveNoButton(e) {
-            if (e) e.preventDefault(); 
-            
-            const noBtn = document.getElementById('no-btn');
-            const container = document.getElementById('main-card');
-            const emojiEl = document.getElementById('cat-emoji');
-            
-            noBtn.style.position = 'absolute';
-            
-            const padding = 20;
-            const maxX = container.clientWidth - noBtn.clientWidth - (padding * 2);
-            const maxY = container.clientHeight - noBtn.clientHeight - (padding * 2);
-            
-            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
-            
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-            
-            if (noCount < catEmojis.length) {
-                emojiEl.innerText = catEmojis[noCount];
-                noCount++;
-            } else {
-                noCount = 0;
-            }
-        }
+        <div class="music-card">
+          <div class="album-art">
+            <img src="https://picsum.photos/120/120?random=11" alt="Perfect" />
+          </div>
+          <div class="song-info">
+            <h3>Perfect</h3>
+            <p>Ed Sheeran</p>
+            <button class="play-btn" onclick="togglePlay(this)">▶ Save on Spotify</button>
+          </div>
+        </div>
 
-        function celebrate() {
-            document.getElementById('screen-2').classList.add('hidden');
-            document.getElementById('screen-3').classList.remove('hidden');
-            createConfetti();
-        }
+        <div class="music-card">
+          <div class="album-art">
+            <img src="https://picsum.photos/120/120?random=12" alt="Until I Found You" />
+          </div>
+          <div class="song-info">
+            <h3>Until I Found You</h3>
+            <p>Stephen Sanchez</p>
+            <button class="play-btn" onclick="togglePlay(this)">▶ Save on Spotify</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        function createConfetti() {
-            const container = document.getElementById('confetti-container');
-            const colors = ['#f43f5e', '#ec4899', '#f472b6', '#fff', '#fb7185'];
-            const shapes = ['❤️', '✨', '🐾', '🌸', '💖', '🐱'];
-            const count = window.innerWidth < 640 ? 60 : 120;
+    <!-- 6. PROPOSAL SECTION -->
+    <section class="proposal-section">
+      <div class="proposal-card">
+        <h2 class="proposal-heading">Kushi, will you be mine forever? 💍</h2>
+        <div class="proposal-buttons">
+          <button id="yes-btn" onclick="acceptProposal()">Yes, absolutely! ❤️</button>
+          <button id="no-btn" onmouseover="moveButton()">No 😜</button>
+        </div>
+        <p id="response-msg" class="hidden-msg"></p>
+      </div>
+    </section>
 
-            for (let i = 0; i < count; i++) {
-                const confetti = document.createElement('div');
-                confetti.innerText = shapes[Math.floor(Math.random() * shapes.length)];
-                confetti.style.position = 'absolute';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-5vh';
-                confetti.style.fontSize = Math.random() * (window.innerWidth < 640 ? 15 : 22) + 12 + 'px';
-                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
-                const duration = Math.random() * 2.5 + 2; 
-                confetti.style.transition = `transform ${duration}s linear, top ${duration}s linear`;
-                
-                container.appendChild(confetti);
+    <!-- 7. HEART ANIMATED BANNER -->
+    <section class="heart-banner">
+      <div class="floating-hearts-bg"></div>
+      <h2 class="ending-text">I love you, Kushi... to the moon and back.</h2>
+    </section>
 
-                setTimeout(() => {
-                    confetti.style.top = '105vh';
-                    confetti.style.transform = `rotate(${Math.random() * 720}deg) translateX(${Math.random() * 80 - 40}px)`;
-                }, 50);
+  </main>
 
-                setTimeout(() => {
-                    confetti.remove();
-                }, duration * 1000);
-            }
-        }
-    </script>
+  <script src="script.js"></script>
 </body>
-  </html>
-  
+</html>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+.screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #111;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.lock-card {
+  background: #1c1c1e;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  width: 320px;
+}
+
+.heart-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #777;
+  transition: background 0.2s;
+}
+
+.dot.filled {
+  background: #ff3b30;
+  border-color: #ff3b30;
+}
+
+#lock-message {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.key {
+  background: #2c2c2e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 auto;
+  transition: transform 0.1s, background 0.2s;
+}
+
+.key:active {
+  transform: scale(0.9);
+  background: #3a3a3c;
+}
+
+.key.action {
+  font-size: 16px;
+  color: #ff3b30;
+}
+
+/* FLOWER INTRO */
+.flower-intro-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fdf6f6;
+  position: relative;
+}
+
+.flower-ring {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  animation: spinRing 20s linear infinite;
+}
+
+@keyframes spinRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.flower {
+  position: absolute;
+  font-size: 45px;
+}
+
+.f1 { top: 0; left: 50%; transform: translate(-50%, -50%); }
+.f2 { top: 15%; right: 15%; }
+.f3 { top: 50%; right: 0; transform: translate(50%, -50%); }
+.f4 { bottom: 15%; right: 15%; }
+.f5 { bottom: 0; left: 50%; transform: translate(-50%, 50%); }
+.f6 { bottom: 15%; left: 15%; }
+.f7 { top: 50%; left: 0; transform: translate(-50%, -50%); }
+.f8 { top: 15%; left: 15%; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  color: #888;
+  font-size: 14px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* GALLERY */
+.gallery-section {
+  padding: 80px 20px;
+  background: #8b1e2b;
+  text-align: center;
+}
+
+.script-heading {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 50px;
+}
+
+.polaroid-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.polaroid {
+  background: #fff;
+  padding: 15px 15px 25px 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  width: 220px;
+}
+
+.polaroid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.polaroid p {
+  color: #333;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  margin-top: 15px;
+}
+
+.rot-left { transform: rotate(-5deg); }
+.rot-right { transform: rotate(4deg); }
+.rot-left-more { transform: rotate(-8deg); }
+.rot-right-more { transform: rotate(6deg); }
+
+.polaroid:hover {
+  transform: scale(1.1) rotate(0deg);
+  z-index: 10;
+}
+
+/* LETTER */
+.letter-section {
+  padding: 100px 20px;
+  background: #5b0e17;
+  display: flex;
+  justify-content: center;
+}
+
+.letter-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 15px;
+  max-width: 600px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.letter-card h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5rem;
+  color: #ffb3c1;
+  margin-bottom: 20px;
+}
+
+.letter-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #f1f1f1;
+  margin-bottom: 20px;
+}
+
+.signature {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.handwriting {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2rem;
+  color: #ffb3c1;
+}
+
+/* MUSIC */
+.music-section {
+  padding: 80px 20px;
+  background: #3a080d;
+  text-align: center;
+}
+
+.section-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.5rem;
+  color: #fff;
+}
+
+.section-subtitle {
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: #aaa;
+  margin-bottom: 40px;
+}
+
+.music-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.music-card {
+  background: #1e1e1e;
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 300px;
+  text-align: left;
+}
+
+.album-art img {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+}
+
+.song-info h3 { font-size: 1.1rem; color: #fff; }
+.song-info p { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
+
+.play-btn {
+  background: #1db954;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* PROPOSAL SECTION */
+.proposal-section {
+  padding: 100px 20px;
+  background: #2b0008;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.proposal-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 50px 30px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.proposal-heading {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #ffb3c1;
+}
+
+.proposal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  min-height: 50px;
+}
+
+#yes-btn {
+  background: #ff3b30;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#yes-btn:hover {
+  transform: scale(1.1);
+}
+
+#no-btn {
+  background: #555;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  position: relative;
+}
+
+.hidden-msg {
+  display: none;
+  font-size: 1.3rem;
+  color: #ffb3c1;
+  margin-top: 25px;
+  font-family: 'Dancing Script', cursive;
+}
+
+/* HEART BANNER */
+.heart-banner {
+  position: relative;
+  height: 60vh;
+  background: #cc0033;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.ending-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3.5rem;
+  color: white;
+  z-index: 2;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  padding: 0 20px;
+}
+let currentPin = '';
+
+function pressKey(val) {
+  if (currentPin.length < 6) {
+    currentPin += val;
+    updateDots();
+  }
+
+  if (currentPin.length === 6) {
+    setTimeout(checkPin, 200);
+  }
+}
+
+function clearPin() {
+  currentPin = '';
+  updateDots();
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, index) => {
+    if (index < currentPin.length) {
+      dot.classList.add('filled');
+    } else {
+      dot.classList.remove('filled');
+    }
+  });
+}
+
+function checkPin() {
+  // Unlocks with any 6-digit PIN entered
+  document.getElementById('lock-screen').classList.add('hidden');
+  document.getElementById('main-content').classList.remove('hidden');
+}
+
+function togglePlay(btn) {
+  if (btn.innerText.includes('Save')) {
+    btn.innerText = '✓ Saved to Spotify';
+    btn.style.background = '#333';
+  } else {
+    btn.innerText = '▶ Save on Spotify';
+    btn.style.background = '#1db954';
+  }
+}
+
+// Playful "No" button movement for the proposal
+function moveButton() {
+  const noBtn = document.getElementById('no-btn');
+  const x = Math.random() * (window.innerWidth - 150) - (window.innerWidth / 2 - 75);
+  const y = Math.random() * 200 - 100;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+function acceptProposal() {
+  const msg = document.getElementById('response-msg');
+  msg.innerText = "Yay! You've made me the happiest person in the world! ❤️💍";
+  msg.style.display = 'block';
+  document.querySelector('.proposal-buttons').style.display = 'none';
+}
+
+// Floating Hearts Background Animation
+function createFloatingHearts() {
+  const banner = document.querySelector('.floating-hearts-bg');
+  if (!banner) return;
+
+  for (let i = 0; i < 25; i++) {
+    const heart = document.createElement('div');
+    heart.innerHTML = '❤️';
+    heart.style.position = 'absolute';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.top = Math.random() * 100 + '%';
+    heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+    heart.style.opacity = Math.random() * 0.5 + 0.3;
+    banner.appendChild(heart);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', createFloatingHearts);
+      
