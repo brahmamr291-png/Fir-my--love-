@@ -1,93 +1,67 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Kushi | Our Infinite Story</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <title>A Universe for Kushi</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        midnight: '#080B15',
-                        deepNavy: '#0F1426',
-                        champagne: '#E5C3A6',
-                        blush: '#F4C2C2',
-                        ivory: '#F9F8F6',
-                        lavender: '#A7A4E0'
-                    },
-                    fontFamily: {
-                        serif: ['"Cormorant Garamond"', 'serif'],
-                        sans: ['"Montserrat"', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
+        :root {
+            --color-midnight: #0a0b10;
+            --color-gold: #e2c08d;
+            --color-blush: #f3d2c1;
+            --color-lavender: #b8b5d3;
+        }
+
         body {
-            background-color: #080B15;
-            color: #F9F8F6;
+            background-color: var(--color-midnight);
+            color: #f8fafc;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Glassmorphism Styles */
-        .glass-panel {
-            background: rgba(15, 20, 38, 0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(229, 195, 166, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        .font-serif-title {
+            font-family: 'Cinzel', serif;
         }
 
+        .font-script {
+            font-family: 'Pinyon Script', cursive;
+        }
+
+        /* Glassmorphism Styling */
         .glass-card {
-            background: rgba(249, 248, 246, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 195, 166, 0.1);
+            background: rgba(18, 20, 32, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 192, 141, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card-interactive {
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .glass-card:hover {
-            border-color: rgba(229, 195, 166, 0.4);
+        .glass-card-interactive:hover {
+            border-color: rgba(226, 192, 141, 0.4);
             transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(229, 195, 166, 0.1);
+            box-shadow: 0 12px 40px 0 rgba(226, 192, 141, 0.15);
         }
 
-        /* Gold Gradient Text */
-        .gold-gradient {
-            background: linear-gradient(135deg, #FFF0E5 0%, #E5C3A6 50%, #C49A76 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .pink-gradient {
-            background: linear-gradient(135deg, #F9F8F6 0%, #F4C2C2 50%, #A7A4E0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Canvas Overlay */
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
+        /* Ambient Glows */
+        .gold-glow {
+            text-shadow: 0 0 20px rgba(226, 192, 141, 0.4);
         }
 
         /* Custom Scrollbar */
@@ -95,254 +69,316 @@
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #080B15;
+            background: #0a0b10;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1A2138;
+            background: rgba(226, 192, 141, 0.3);
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #E5C3A6;
+            background: rgba(226, 192, 141, 0.6);
+        }
+
+        /* Firefly Animation */
+        .firefly {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #e2c08d;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 6px #e2c08d);
+            pointer-events: none;
+            opacity: 0;
+            animation: float-around 8s infinite ease-in-out;
+        }
+
+        @keyframes float-around {
+            0% { opacity: 0; transform: translate(0, 0) scale(0.8); }
+            50% { opacity: 0.8; transform: translate(60px, -40px) scale(1.2); }
+            100% { opacity: 0; transform: translate(-40px, -80px) scale(0.8); }
         }
     </style>
 </head>
-<body class="relative selection:bg-champagne selection:text-midnight">
+<body class="relative selection:bg-[#e2c08d] selection:text-[#0a0b10]">
 
-    <canvas id="bgCanvas"></canvas>
+    <canvas id="webgl-canvas" class="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"></canvas>
 
     <div class="fixed top-6 right-6 z-50">
-        <button id="audioToggle" class="glass-panel p-3 rounded-full text-champagne hover:text-ivory transition-colors flex items-center gap-2 px-4 text-xs tracking-widest uppercase border border-champagne/20">
-            <i data-lucide="music" class="w-4 h-4"></i>
-            <span id="audioStatus">Sound On</span>
+        <button id="music-toggle" aria-label="Toggle background music" class="glass-card p-3 rounded-full text-[#e2c08d] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#e2c08d]">
+            <i data-lucide="music-4" id="music-icon" class="w-5 h-5"></i>
         </button>
-        <audio id="bgAudio" loop preload="auto">
-            <source src="https://assets.mixkit.co/music/preview/mixkit-a-very-happy-gospel-114.mp3" type="audio/mpeg">
+        <audio id="bg-music" loop preload="auto">
+            <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-    <main class="relative z-10">
+    <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0b10] transition-opacity duration-1000 px-4 text-center">
+        <p id="loader-subtitle" class="font-script text-2xl sm:text-3xl text-[#b8b5d3] mb-4 opacity-0">A little universe was created for someone special...</p>
+        <h1 id="loader-title" class="font-serif-title text-4xl sm:text-6xl text-[#e2c08d] tracking-widest uppercase mb-8 gold-glow opacity-0">Kushi</h1>
+        <button id="begin-btn" class="opacity-0 px-8 py-3 rounded-full border border-[#e2c08d]/40 text-[#e2c08d] hover:bg-[#e2c08d] hover:text-[#0a0b10] transition-all duration-500 font-medium tracking-wider text-sm uppercase glass-card">
+            Begin the Journey
+        </button>
+    </div>
+
+    <main id="main-content" class="relative z-10 hidden">
 
         <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
-            <div class="max-w-4xl mx-auto space-y-6 animate-fade-in">
-                <span class="text-champagne/80 tracking-[0.4em] text-xs sm:text-sm uppercase font-light">An Unforgettable Journey</span>
-                <h1 class="font-serif text-6xl sm:text-8xl md:text-9xl font-light tracking-wide gold-gradient">
-                    Kushi
+            <div class="max-w-3xl space-y-6">
+                <span class="text-[#b8b5d3] tracking-[0.3em] uppercase text-xs sm:text-sm">Written in the Stars</span>
+                <h1 class="font-serif-title text-5xl sm:text-7xl lg:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-[#e2c08d] via-[#f3d2c1] to-[#b8b5d3] font-bold">
+                    For Kushi
                 </h1>
-                <p class="font-serif text-xl sm:text-2xl md:text-3xl text-ivory/80 italic max-w-2xl mx-auto leading-relaxed">
-                    "In the vastness of space and the passage of time, sharing this life with you is my favorite miracle."
+                <p class="text-base sm:text-lg text-slate-300 font-light leading-relaxed max-w-xl mx-auto">
+                    Among billions of galaxies and infinite light, every path I ever took was simply leading me home... to you.
                 </p>
-                <div class="pt-8">
-                    <a href="#letter" class="inline-block glass-panel px-8 py-4 rounded-full text-champagne hover:bg-champagne hover:text-midnight transition-all duration-500 text-xs tracking-[0.2em] uppercase font-medium">
-                        Begin Our Story
-                    </a>
+            </div>
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 text-[#e2c08d]/60 animate-pulse">
+                <span class="text-xs tracking-widest uppercase">Scroll to Explore</span>
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 max-w-5xl mx-auto">
+            <div class="text-center mb-16 space-y-2">
+                <span class="text-[#e2c08d] font-script text-3xl">Chapter I</span>
+                <h2 class="font-serif-title text-3xl sm:text-4xl text-white tracking-wide">The Constellation of Us</h2>
+            </div>
+
+            <div class="relative border-l border-[#e2c08d]/20 ml-4 sm:ml-32 space-y-12">
+                <div class="relative pl-8 sm:pl-12 timeline-item">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#0a0b10] border-2 border-[#e2c08d]"></div>
+                    <div class="glass-card p-6 rounded-2xl glass-card-interactive max-w-xl">
+                        <span class="text-xs text-[#e2c08d] tracking-widest uppercase font-semibold">The First Spark</span>
+                        <h3 class="font-serif-title text-xl text-white mt-1 mb-2">When Paths Crossed</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            The moment you stepped into my life, the world didn't stop—it suddenly made complete sense. Your laughter shifted the atmospheric temperature of every room.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative pl-8 sm:pl-12 timeline-item">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#0a0b10] border-2 border-[#f3d2c1]"></div>
+                    <div class="glass-card p-6 rounded-2xl glass-card-interactive max-w-xl">
+                        <span class="text-xs text-[#f3d2c1] tracking-widest uppercase font-semibold">Unspoken Connection</span>
+                        <h3 class="font-serif-title text-xl text-white mt-1 mb-2">Late Night Conversations</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Hours turned into seconds talking about everything and nothing at all. I realized back then that you were becoming my favorite thought.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative pl-8 sm:pl-12 timeline-item">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#0a0b10] border-2 border-[#b8b5d3]"></div>
+                    <div class="glass-card p-6 rounded-2xl glass-card-interactive max-w-xl">
+                        <span class="text-xs text-[#b8b5d3] tracking-widest uppercase font-semibold">Today & Beyond</span>
+                        <h3 class="font-serif-title text-xl text-white mt-1 mb-2">Building Our Sanctuary</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Every shared dream, inside joke, and quiet moment has woven together to create a bond stronger than time itself.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="letter" class="py-32 px-6 max-w-4xl mx-auto">
-            <div class="glass-panel p-8 sm:p-16 rounded-3xl relative">
-                <div class="absolute -top-6 -left-6 text-champagne/20 font-serif text-9xl select-none leading-none">“</div>
-                <h2 class="font-serif text-3xl sm:text-4xl text-champagne mb-8 italic">My Dearest Kushi,</h2>
-                <div class="space-y-6 text-ivory/80 font-light leading-relaxed text-base sm:text-lg">
-                    <p>
-                        From the moment our paths crossed, the cadence of my life changed forever. You came into my world not like a sudden storm, but like the gentle morning light—softly, brilliantly, and making everything around you bloom.
-                    </p>
-                    <p>
-                        In your laugh, I found a home I never knew I was searching for. In your eyes, I see a future full of warmth, quiet moments, and wild adventures. loving you has been the simplest, most natural, and most profoundly meaningful thing I have ever done.
-                    </p>
-                    <p>
-                        This page is a small canvas dedicated to you—a collection of our memories, our dreams, and the endless space you occupy in my heart.
-                    </p>
-                </div>
-                <div class="mt-10 pt-6 border-t border-champagne/10 text-right">
-                    <span class="font-serif text-xl text-champagne italic">With all my love, always</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-32 px-6 max-w-5xl mx-auto">
-            <div class="text-center mb-20">
-                <span class="text-lavender tracking-[0.3em] text-xs uppercase block mb-2">Milestones</span>
-                <h2 class="font-serif text-4xl sm:text-5xl pink-gradient">Moments Etched in Time</h2>
-            </div>
-
-            <div class="space-y-12 relative before:absolute before:inset-0 before:left-1/2 before:-translate-x-px before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-champagne/20 before:to-transparent">
-                
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-champagne/30 text-champagne shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                        <i data-lucide="sparkles" class="w-4 h-4"></i>
-                    </div>
-                    <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-2xl">
-                        <span class="text-xs text-champagne tracking-widest uppercase font-medium">Chapter I</span>
-                        <h3 class="font-serif text-2xl text-ivory mt-1 mb-2">The First Spark</h3>
-                        <p class="text-sm text-ivory/70 font-light leading-relaxed">The day we first spoke. A conversation that felt effortless, endless, and entirely unforgettable.</p>
-                    </div>
-                </div>
-
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-champagne/30 text-champagne shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                        <i data-lucide="heart" class="w-4 h-4"></i>
-                    </div>
-                    <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-2xl">
-                        <span class="text-xs text-champagne tracking-widest uppercase font-medium">Chapter II</span>
-                        <h3 class="font-serif text-2xl text-ivory mt-1 mb-2">Realizing It Was You</h3>
-                        <p class="text-sm text-ivory/70 font-light leading-relaxed">The quiet realization that my happiest moments were all the ones spent by your side.</p>
-                    </div>
-                </div>
-
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-champagne/30 text-champagne shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                        <i data-lucide="compass" class="w-4 h-4"></i>
-                    </div>
-                    <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-2xl">
-                        <span class="text-xs text-champagne tracking-widest uppercase font-medium">Chapter III</span>
-                        <h3 class="font-serif text-2xl text-ivory mt-1 mb-2">Shared Horizons</h3>
-                        <p class="text-sm text-ivory/70 font-light leading-relaxed">Navigating life together, learning your dreams, and realizing our paths were meant to merge.</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section class="py-32 px-6 max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-blush tracking-[0.3em] text-xs uppercase block mb-2">The Sanctuary</span>
-                <h2 class="font-serif text-4xl sm:text-5xl gold-gradient">Kushi’s Botanical Garden</h2>
-                <p class="text-ivory/60 max-w-md mx-auto text-sm font-light mt-4">Hover over each bloom to reveal what it symbolizes in our relationship.</p>
+        <section class="py-24 px-6 max-w-6xl mx-auto relative">
+            <div class="text-center mb-16 space-y-2">
+                <span class="text-[#e2c08d] font-script text-3xl">Chapter II</span>
+                <h2 class="font-serif-title text-3xl sm:text-4xl text-white tracking-wide">Captured Moments</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-8 rounded-2xl text-center group">
-                    <div class="w-16 h-16 mx-auto mb-6 rounded-full glass-panel flex items-center justify-center text-blush group-hover:scale-110 transition-transform">
-                        <i data-lucide="flower-2" class="w-8 h-8"></i>
+                <div class="glass-card p-4 rounded-2xl glass-card-interactive flex flex-col items-center text-center">
+                    <div class="w-full h-64 rounded-lg bg-slate-900 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400 relative overflow-hidden group">
+                        <i data-lucide="image" class="w-8 h-8 mb-2 text-[#e2c08d]"></i>
+                        <span class="text-xs tracking-wider uppercase">Photo Placeholder</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image source</span>
                     </div>
-                    <h3 class="font-serif text-2xl text-champagne mb-2">White Rose</h3>
-                    <p class="text-xs text-lavender tracking-widest uppercase mb-4">Purity & Devotion</p>
-                    <p class="text-sm text-ivory/70 font-light leading-relaxed">Symbolizing the sincerity and elegance that you bring into my life every single day.</p>
+                    <p class="font-script text-2xl text-[#f3d2c1] mt-4">Your Unmatched Smile</p>
+                    <p class="text-xs text-slate-400 font-light mt-1">The warmth that brightens my darkest days.</p>
                 </div>
 
-                <div class="glass-card p-8 rounded-2xl text-center group">
-                    <div class="w-16 h-16 mx-auto mb-6 rounded-full glass-panel flex items-center justify-center text-blush group-hover:scale-110 transition-transform">
-                        <i data-lucide="sun" class="w-8 h-8"></i>
+                <div class="glass-card p-4 rounded-2xl glass-card-interactive flex flex-col items-center text-center">
+                    <div class="w-full h-64 rounded-lg bg-slate-900 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400 relative overflow-hidden group">
+                        <i data-lucide="image" class="w-8 h-8 mb-2 text-[#e2c08d]"></i>
+                        <span class="text-xs tracking-wider uppercase">Photo Placeholder</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image source</span>
                     </div>
-                    <h3 class="font-serif text-2xl text-champagne mb-2">Golden Peony</h3>
-                    <p class="text-xs text-lavender tracking-widest uppercase mb-4">Prosperity & Joy</p>
-                    <p class="text-sm text-ivory/70 font-light leading-relaxed">Representing the joy ('Kushi') that radiates from you and brightens even the darkest days.</p>
+                    <p class="font-script text-2xl text-[#f3d2c1] mt-4">Adventures Together</p>
+                    <p class="text-xs text-slate-400 font-light mt-1">Every step taken by your side feels like home.</p>
                 </div>
 
-                <div class="glass-card p-8 rounded-2xl text-center group">
-                    <div class="w-16 h-16 mx-auto mb-6 rounded-full glass-panel flex items-center justify-center text-blush group-hover:scale-110 transition-transform">
-                        <i data-lucide="moon" class="w-8 h-8"></i>
+                <div class="glass-card p-4 rounded-2xl glass-card-interactive flex flex-col items-center text-center">
+                    <div class="w-full h-64 rounded-lg bg-slate-900 border border-white/10 flex flex-col items-center justify-center p-4 text-slate-400 relative overflow-hidden group">
+                        <i data-lucide="image" class="w-8 h-8 mb-2 text-[#e2c08d]"></i>
+                        <span class="text-xs tracking-wider uppercase">Photo Placeholder</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Replace with custom image source</span>
                     </div>
-                    <h3 class="font-serif text-2xl text-champagne mb-2">Night Jasmine</h3>
-                    <p class="text-xs text-lavender tracking-widest uppercase mb-4">Grace & Wonder</p>
-                    <p class="text-sm text-ivory/70 font-light leading-relaxed">A gentle reminder of our quiet late-night conversations under the stars.</p>
+                    <p class="font-script text-2xl text-[#f3d2c1] mt-4">Quiet Perfection</p>
+                    <p class="text-xs text-slate-400 font-light mt-1">Finding peace in the gentle stillness with you.</p>
                 </div>
             </div>
         </section>
 
-        <section class="py-32 px-6 max-w-4xl mx-auto text-center relative">
-            <div class="glass-panel p-12 sm:p-20 rounded-3xl relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-b from-lavender/5 to-transparent pointer-events-none"></div>
-                <i data-lucide="stars" class="w-12 h-12 text-champagne mx-auto mb-6 opacity-80"></i>
-                <h2 class="font-serif text-4xl sm:text-6xl gold-gradient mb-6">Written in the Stars</h2>
-                <p class="text-ivory/80 font-light text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-                    Ancient astronomers believed constellations held the secrets of the world. If I were to map my own universe, every star would lead directly back to you.
+        <section class="py-20 px-6 max-w-3xl mx-auto text-center relative">
+            <div id="firefly-container" class="absolute inset-0 pointer-events-none"></div>
+
+            <div class="glass-card p-8 sm:p-12 rounded-3xl relative overflow-hidden border border-[#e2c08d]/30">
+                <div class="inline-p-3 rounded-full bg-[#e2c08d]/10 text-[#e2c08d] mb-4 inline-block">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-serif-title text-2xl text-white mb-2">A Hidden Wish</h3>
+                <p class="text-slate-300 text-sm mb-6 max-w-md mx-auto">
+                    Click the star constellation below to reveal a secret written only for you, Kushi.
                 </p>
-                <div class="inline-block glass-card px-6 py-3 rounded-full text-xs text-champagne tracking-widest uppercase">
-                    Coordinates: Always By Your Side
-                </div>
-            </div>
-        </section>
 
-        <section class="py-32 px-6 max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-champagne tracking-[0.3em] text-xs uppercase block mb-2">The Future</span>
-                <h2 class="font-serif text-4xl sm:text-5xl pink-gradient">Adventures Awaiting Us</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-8 rounded-2xl flex items-start gap-6">
-                    <div class="p-4 rounded-xl glass-panel text-champagne shrink-0">
-                        <i data-lucide="plane" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-serif text-2xl text-ivory mb-2">Exploring New Cities</h3>
-                        <p class="text-sm text-ivory/70 font-light leading-relaxed">Walking through unfamiliar cobblestone streets, trying new cafes, and getting lost together in foreign worlds.</p>
-                    </div>
-                </div>
-
-                <div class="glass-card p-8 rounded-2xl flex items-start gap-6">
-                    <div class="p-4 rounded-xl glass-panel text-champagne shrink-0">
-                        <i data-lucide="mountain" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-serif text-2xl text-ivory mb-2">Mountain Sunrises</h3>
-                        <p class="text-sm text-ivory/70 font-light leading-relaxed">Watching the dawn break over quiet peaks, wrapped in blankets, holding warm cups of coffee.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-32 px-6 max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-lavender tracking-[0.3em] text-xs uppercase block mb-2">Gallery</span>
-                <h2 class="font-serif text-4xl sm:text-5xl gold-gradient">Treasured Moments</h2>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass-card rounded-2xl overflow-hidden group">
-                    <div class="h-64 bg-deepNavy/80 flex flex-col items-center justify-center p-6 text-center border-b border-champagne/10 relative">
-                        <i data-lucide="image" class="w-8 h-8 text-champagne/40 mb-2"></i>
-                        <span class="text-xs text-champagne/60 tracking-wider uppercase">[ Place Personal Photo Here ]</span>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-serif text-xl text-ivory mb-1">A Quiet Afternoon</h4>
-                        <p class="text-xs text-ivory/60 font-light">Simple moments that mean the world.</p>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-2xl overflow-hidden group">
-                    <div class="h-64 bg-deepNavy/80 flex flex-col items-center justify-center p-6 text-center border-b border-champagne/10 relative">
-                        <i data-lucide="image" class="w-8 h-8 text-champagne/40 mb-2"></i>
-                        <span class="text-xs text-champagne/60 tracking-wider uppercase">[ Place Personal Photo Here ]</span>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-serif text-xl text-ivory mb-1">Under the Stars</h4>
-                        <p class="text-xs text-ivory/60 font-light">Late night laughter and endless dreams.</p>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-2xl overflow-hidden group">
-                    <div class="h-64 bg-deepNavy/80 flex flex-col items-center justify-center p-6 text-center border-b border-champagne/10 relative">
-                        <i data-lucide="image" class="w-8 h-8 text-champagne/40 mb-2"></i>
-                        <span class="text-xs text-champagne/60 tracking-wider uppercase">[ Place Personal Photo Here ]</span>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-serif text-xl text-ivory mb-1">Our Favorite Gateway</h4>
-                        <p class="text-xs text-ivory/60 font-light">Escaping into nature together.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-32 px-6 max-w-4xl mx-auto text-center">
-            <span class="text-blush tracking-[0.3em] text-xs uppercase block mb-2">Reflections</span>
-            <h2 class="font-serif text-4xl sm:text-5xl pink-gradient mb-12">Reasons I Love You</h2>
-
-            <div id="reasonCard" class="glass-panel p-10 sm:p-16 rounded-3xl min-h-[220px] flex flex-col items-center justify-center relative transition-all duration-500">
-                <p id="reasonText" class="font-serif text-2xl sm:text-3xl text-champagne italic font-light leading-relaxed">
-                    "The gentle warmth and kindness you offer to everyone around you."
-                </p>
-            </div>
-
-            <div class="mt-8">
-                <button onclick="nextReason()" class="glass-card px-8 py-3 rounded-full text-xs tracking-widest text-champagne uppercase hover:bg-champagne/10 transition-colors border border-champagne/20">
-                    Discover Another Reason
+                <button id="secret-star-btn" class="p-4 rounded-full border border-[#e2c08d]/40 text-[#e2c08d] hover:bg-[#e2c08d]/10 transition-all duration-300 transform hover:scale-110 focus:outline-none">
+                    <i data-lucide="star" class="w-8 h-8 fill-current text-[#e2c08d] animate-pulse"></i>
                 </button>
+
+                <div id="secret-message" class="hidden mt-6 pt-6 border-t border-white/10 text-left space-y-3">
+                    <p class="font-script text-3xl text-[#e2c08d]">My Dearest Kushi,</p>
+                    <p class="text-slate-300 text-sm leading-relaxed font-light">
+                        If you ever wonder why I created this universe for you, it is because standard words were never enough to hold what I feel. You are my safe harbor, my greatest adventure, and my favorite place in this entire world.
+                    </p>
+                </div>
             </div>
         </section>
 
-        <section class="py-32 px-6 max-w-4xl mx-auto text-center relative">
-            <div class="glass-panel p-12 sm:p-20 rounded-3xl border border-champagne/30 relative">
-                <span class="text-champagne tracking-[0.4em] text-xs uppercase block mb-
+        <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 py-24 relative">
+            <div class="max-w-4xl space-y-8 glass-card p-8 sm:p-16 rounded-3xl border border-[#e2c08d]/40 shadow-2xl relative z-20">
+                <span class="text-[#e2c08d] font-script text-4xl block">Chapter IV</span>
+                
+                <h2 class="font-serif-title text-3xl sm:text-5xl lg:text-6xl text-white font-bold leading-tight gold-glow">
+                    Kushi, will you be part of my forever?
+                </h2>
+
+                <p class="text-slate-300 text-base sm:text-lg font-light max-w-2xl mx-auto leading-relaxed">
+                    I don't just want to share moments with you—I want to share a lifetime of tomorrows, laughter, dreams, and endless stars.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+                    <button id="proposal-yes-btn" class="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#e2c08d] to-[#f3d2c1] text-[#0a0b10] font-semibold tracking-wider text-sm uppercase shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                        Yes, I Will!
+                    </button>
+                    <button id="proposal-forever-btn" class="w-full sm:w-auto px-10 py-4 rounded-full border border-[#e2c08d] text-[#e2c08d] hover:bg-[#e2c08d]/10 font-semibold tracking-wider text-sm uppercase transition-all duration-300">
+                        Let's Begin Our Story
+                    </button>
+                </div>
+
+                <div id="celebration-screen" class="hidden pt-8 space-y-4">
+                    <h3 class="font-script text-5xl text-[#e2c08d]">You’ve Made Me the Happiest Person Alive!</h3>
+                    <p class="text-slate-200 text-sm tracking-wide">Our journey together begins now and lasts forever.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 1. Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 2. Audio Control System
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-toggle');
+        const musicIcon = document.getElementById('music-icon');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.setAttribute('data-lucide', 'music-4');
+            } else {
+                music.play();
+                musicIcon.setAttribute('data-lucide', 'volume-2');
+            }
+            isPlaying = !isPlaying;
+            lucide.createIcons();
+        });
+
+        // 3. Three.js Interactive 3D Starfield Universe
+        let scene, camera, renderer, starParticles;
+        let mouseX = 0, mouseY = 0;
+
+        function initThreeJS() {
+            const canvas = document.getElementById('webgl-canvas');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create Stars Geometry
+            const starsCount = 1500;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(starsCount * 3);
+            const colors = new Float32Array(starsCount * 3);
+
+            const colorPalette = [
+                new THREE.Color('#e2c08d'),
+                new THREE.Color('#f3d2c1'),
+                new THREE.Color('#b8b5d3'),
+                new THREE.Color('#ffffff')
+            ];
+
+            for (let i = 0; i < starsCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 15;
+                positions[i + 1] = (Math.random() - 0.5) * 15;
+                positions[i + 2] = (Math.random() - 0.5) * 15;
+
+                const chosenColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                colors[i] = chosenColor.r;
+                colors[i + 1] = chosenColor.g;
+                colors[i + 2] = chosenColor.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.025,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            starParticles = new THREE.Points(geometry, material);
+            scene.add(starParticles);
+
+            window.addEventListener('resize', onWindowResize);
+            document.addEventListener('mousemove', onDocumentMouseMove);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.0005;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.0005;
+        }
+
+        function animateThreeJS() {
+            requestAnimationFrame(animateThreeJS);
+
+            if (starParticles) {
+                starParticles.rotation.y += 0.0008;
+                starParticles.rotation.x += 0.0004;
+
+                // Subtle parallax shift based on cursor move
+                starParticles.rotation.y += (mouseX - starParticles.rotation.y) * 0.05;
+                starParticles.rotation.x += (mouseY - starParticles.rotation.x) * 0.05;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Initialize WebGL Universe
+        try {
+            initThreeJS();
+            animateThreeJS();
+        } catch (e) {
+            console.warn("WebGL not supported, falling back to clean gra
